@@ -31,9 +31,7 @@ export const intro = {
 };
 
 export const availability = {
-  open: true,
-  headline: "Open to summer 2027 internships",
-  detail: "Also taking freelance full-stack work.",
+  detail: "Taking on freelance full-stack work.",
 };
 
 /** The "what I'm doing right now" block. Keep it to four lines and keep it true. */

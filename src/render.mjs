@@ -145,11 +145,6 @@ const hero = () => `
   <div class="shell">
     <div class="reveal flex flex-wrap items-center gap-x-6 gap-y-3">
       <span class="eyebrow inline-flex items-center gap-2">${icon.pin()}${esc(person.based)} · UTC+8</span>
-      ${
-        availability.open
-          ? `<span class="eyebrow inline-flex items-center gap-2.5 text-ink-2"><span class="ping" aria-hidden="true"></span>${esc(availability.headline)}</span>`
-          : ""
-      }
     </div>
 
     <h1 class="mt-8 font-display font-extrabold" style="font-size:var(--text-hero);line-height:0.86">
@@ -536,7 +531,7 @@ const contact = () => `
       <div class="md:col-span-6">
         <h2 class="eyebrow reveal">Contact</h2>
         <p class="reveal display mt-5">Say <span class="accent-word">hello</span>.</p>
-        <p class="reveal prose-measure mt-6 text-ink-2" style="--i:1">${esc(availability.headline)}. ${esc(availability.detail)} Telegram is the fastest way to reach me; email works just as well and I answer both.</p>
+        <p class="reveal prose-measure mt-6 text-ink-2" style="--i:1">${esc(availability.detail)} Telegram is fastest; email works just as well and I answer both.</p>
         <div class="reveal mt-10 flex flex-wrap gap-3" style="--i:2">
           <a href="mailto:${esc(person.email)}" class="btn btn-primary magnetic" data-magnet="0.16"><span>${esc(person.email)}</span></a>
           <a href="https://t.me/devbekhruz" target="_blank" rel="noopener" class="btn btn-ghost magnetic" data-magnet="0.16"><span>Telegram</span>${icon.arrowUpRight()}</a>

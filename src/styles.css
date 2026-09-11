@@ -526,35 +526,6 @@ img {
   transform: none;
 }
 
-/* --- Availability beacon. --- */
-@keyframes ping {
-  0% {
-    transform: scale(1);
-    opacity: 0.9;
-  }
-  70%,
-  100% {
-    transform: scale(2.6);
-    opacity: 0;
-  }
-}
-.ping {
-  position: relative;
-  display: inline-block;
-  width: 0.4375rem;
-  height: 0.4375rem;
-  border-radius: 999px;
-  background: var(--accent);
-}
-.ping::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background: var(--accent);
-  animation: ping 2.4s var(--ease-out) infinite;
-}
-
 /* --- Marquee for the toolkit strip. --- */
 @keyframes drift {
   from {
@@ -747,9 +718,6 @@ img {
   }
   .marquee-track {
     animation: none !important;
-  }
-  .ping::after {
-    display: none;
   }
 }
 
