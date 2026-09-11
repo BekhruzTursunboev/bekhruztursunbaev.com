@@ -65,7 +65,45 @@ const html = renderPage({ cssHref: `/${cssName}`, jsHref: `/${jsName}`, fontKB, 
 await writeFile(join(DIST, "index.html"), html, "utf8");
 await writeFile(join(DIST, "404.html"), render404({ cssHref: `/${cssName}` }), "utf8");
 
-/* 7 ─ report */
+/* 7 ─ sitemap, stamped with the build date so crawlers see it change */
+const today = new Date().toISOString().slice(0, 10);
+await writeFile(
+  join(DIST, "sitemap.xml"),
+  `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://bekhruztursunbaev.com/</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+</urlset>
+`,
+  "utf8"
+);
+
+/* 8 ─ guard the things that quietly rot: metadata length, alt text, canonical */
+const checks = [];
+const titleText = (html.match(/<title>(.*?)<\/title>/s) ?? [])[1] ?? "";
+const descText = (html.match(/<meta name="description" content="(.*?)"/s) ?? [])[1] ?? "";
+if (titleText.length > 60) checks.push(`title is ${titleText.length} chars (>60)`);
+if (descText.length > 160) checks.push(`meta description is ${descText.length} chars (>160)`);
+if (!html.includes('rel="canonical"')) checks.push("no canonical link");
+if (!html.includes('name="robots"')) checks.push("no robots meta");
+const emptyAlts = (html.match(/<img[^>]*alt=""[^>]*>/g) ?? []).length;
+if (emptyAlts) checks.push(`${emptyAlts} image(s) with empty alt`);
+const h1s = (html.match(/<h1[\s>]/g) ?? []).length;
+if (h1s !== 1) checks.push(`${h1s} h1 elements (want exactly 1)`);
+if (checks.length) {
+  console.error(`\n  SEO problems:\n   - ${checks.join("\n   - ")}\n`);
+  process.exitCode = 1;
+} else {
+  console.log(
+    `\n  seo ok — title ${titleText.length}c, description ${descText.length}c, 1 h1, every image has alt`
+  );
+}
+
+/* 9 ─ report */
 const walk = async (dir) => {
   const out = [];
   for (const entry of await readdir(dir, { withFileTypes: true })) {

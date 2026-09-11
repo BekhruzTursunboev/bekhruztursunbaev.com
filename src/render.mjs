@@ -76,13 +76,13 @@ const icon = {
 };
 
 /** Responsive product screenshot for a project, or nothing if none exists. */
-const shot = (slug, sizes, priority = false) => `
+const shot = (slug, sizes, priority = false, alt = "") => `
   <div class="shot">
     <picture>
       <source type="image/avif" srcset="/shots/${slug}-520.avif 520w, /shots/${slug}-900.avif 900w, /shots/${slug}-1300.avif 1300w" sizes="${sizes}">
       <img src="/shots/${slug}-900.webp"
         srcset="/shots/${slug}-520.webp 520w, /shots/${slug}-900.webp 900w, /shots/${slug}-1300.webp 1300w"
-        sizes="${sizes}" width="1440" height="900" alt=""
+        sizes="${sizes}" width="1440" height="900" alt="${esc(alt)}"
         loading="${priority ? "eager" : "lazy"}" decoding="async"
         class="aspect-[16/10] w-full object-cover object-top">
     </picture>
@@ -224,7 +224,7 @@ const work = () => {
     <article class="grid items-start gap-8 md:grid-cols-12 md:gap-10">
       <div class="${flip ? "md:col-span-7 md:col-start-6" : "md:col-span-7"}">
         <a href="${esc(p.live ?? p.repo)}" target="_blank" rel="noopener" class="shot-link spotlight block" aria-label="Open ${esc(p.name)}, ${esc(p.kind)}">
-          ${shot(p.slug, "(min-width:768px) 56vw, 92vw", n === 0)}
+          ${shot(p.slug, "(min-width:768px) 56vw, 92vw", n === 0, `${p.name} screenshot — ${p.kind} built by ${person.name}`)}
         </a>
       </div>
 
@@ -291,7 +291,7 @@ const work = () => {
         .map((p, n) => {
           const href = p.live ?? p.repo;
           const media = p.live
-            ? `<a href="${esc(href)}" target="_blank" rel="noopener" class="shot-link block" aria-label="Open ${esc(p.name)}, ${esc(p.kind)}" tabindex="-1">${shot(p.slug, "(min-width:640px) 44vw, 92vw")}</a>`
+            ? `<a href="${esc(href)}" target="_blank" rel="noopener" class="shot-link block" aria-label="Open ${esc(p.name)}, ${esc(p.kind)}" tabindex="-1">${shot(p.slug, "(min-width:640px) 44vw, 92vw", false, `${p.name} screenshot — ${p.kind}`)}</a>`
             : `<div class="shot shot-blank"><span class="mono text-[0.75rem] text-ink-3">SKILL.md</span></div>`;
           return `
       <article class="reveal spotlight card" ${i(n)}>
@@ -580,14 +580,16 @@ const contact = () => `
 /* document                                                                    */
 /* -------------------------------------------------------------------------- */
 
+// Kept under ~155 characters so search results show it whole, and leading with
+// the name because ranking for his own name is the primary goal.
 const description =
-  "Bekhruz Tursunboev is a full-stack and AI engineer from Tashkent, studying at Duke Kunshan University. He builds AI tutoring, property valuation and revenue tools that are live and in use.";
+  "Bekhruz Tursunboev — full-stack and AI engineer from Tashkent, studying at Duke Kunshan University. AI tutoring, property valuation and revenue tools, live.";
 
 const themeScript = `(function(){try{var s=localStorage.getItem("theme");var m=window.matchMedia("(prefers-color-scheme: light)").matches;document.documentElement.dataset.theme=s||(m?"light":"dark")}catch(e){document.documentElement.dataset.theme="dark"}})()`;
 
-const jsonLd = {
-  "@context": "https://schema.org",
+const personSchema = {
   "@type": "Person",
+  "@id": `${person.url}/#person`,
   name: person.name,
   alternateName: person.nameUz,
   url: person.url,
@@ -597,9 +599,47 @@ const jsonLd = {
   description,
   knowsLanguage: ["uz", "ru", "en"],
   homeLocation: { "@type": "Place", name: person.based },
+  // alumniOf is the school he finished; the university he currently attends is
+  // an affiliation, not an alma mater, until he graduates.
   alumniOf: { "@type": "EducationalOrganization", name: education.prior.school },
+  affiliation: { "@type": "CollegeOrUniversity", name: education.school },
   worksFor: { "@type": "Organization", name: "55 KVARTAL" },
+  knowsAbout: [
+    "Full-stack web development",
+    "TypeScript",
+    "Next.js",
+    "React",
+    "Python",
+    "PostgreSQL",
+    "AI engineering",
+    "Prompt engineering",
+  ],
   sameAs: links.filter((l) => l.href.startsWith("http")).map((l) => l.href),
+};
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    personSchema,
+    {
+      "@type": "WebSite",
+      "@id": `${person.url}/#website`,
+      url: `${person.url}/`,
+      name: person.name,
+      description,
+      inLanguage: "en",
+      publisher: { "@id": `${person.url}/#person` },
+    },
+    {
+      "@type": "ProfilePage",
+      "@id": `${person.url}/#page`,
+      url: `${person.url}/`,
+      name: `${person.name} — ${person.role}`,
+      isPartOf: { "@id": `${person.url}/#website` },
+      about: { "@id": `${person.url}/#person` },
+      primaryImageOfPage: `${person.url}/og.png`,
+    },
+  ],
 };
 
 /** Minimal 404. Same tokens and type as the site, no scripts, no images. */
@@ -642,6 +682,8 @@ export function renderPage({ cssHref, jsHref, fontKB = 0, jsKB = 0 }) {
 <title>${esc(person.name)} — ${esc(person.role)}</title>
 <meta name="description" content="${esc(description)}">
 <link rel="canonical" href="${esc(person.url)}/">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<link rel="manifest" href="/site.webmanifest">
 <meta name="author" content="${esc(person.name)}">
 <meta name="theme-color" content="#141210" media="(prefers-color-scheme: dark)">
 <meta name="theme-color" content="#f8f4ee" media="(prefers-color-scheme: light)">
