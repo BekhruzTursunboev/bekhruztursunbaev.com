@@ -9,7 +9,16 @@ import { chromium } from "playwright-core";
 const target = process.argv[2] ?? "https://bekhruztursunbaev.tursunbaevbexruz19.workers.dev/";
 const origin = new URL(target).host;
 
-const browser = await chromium.launch();
+// Some networks (including the author's) have broken IPv6, and Chromium prefers
+// AAAA. Pass an IPv4 address as the third argument to pin resolution to it.
+const pinnedIp = process.argv[3];
+const args = [];
+if (pinnedIp) {
+  // Bypass any system proxy as well -- a local proxy that mishandles the domain
+  // produces the same ERR_CONNECTION_CLOSED as a genuinely broken site.
+  args.push(`--host-resolver-rules=MAP ${origin} ${pinnedIp}`, "--no-proxy-server");
+}
+const browser = await chromium.launch({ args });
 const context = await browser.newContext({ viewport: { width: 1440, height: 1000 } });
 const page = await context.newPage();
 
