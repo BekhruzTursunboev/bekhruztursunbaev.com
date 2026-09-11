@@ -37,15 +37,30 @@ duplicated in markup, so a number, date or link is changed in exactly one place.
 
 ## Deploying
 
-Build output is a plain directory, so any static host works.
+Hosted on **Cloudflare Workers Static Assets** (Cloudflare folded Pages into
+Workers), configured in `wrangler.jsonc`. Chosen over Vercel's free tier, whose
+[Fair Use Guidelines](https://vercel.com/docs/limits/fair-use-guidelines)
+restrict Hobby to non-commercial use and name "advertising the sale of a product
+or service" — this site advertises freelance availability.
 
-**Cloudflare Pages** is the recommended target: unlimited bandwidth on the free
-tier and, unlike Vercel's Hobby plan, no clause restricting commercial use —
-which matters because this site advertises freelance availability.
+```bash
+npm run deploy   # build + wrangler deploy
+npm run smoke    # load the live site and assert it contacts no other host
+```
 
-- Build command: `npm run build`
-- Output directory: `dist`
-- Point both the apex and `www` at it; check both resolve.
+`public/_headers` is honoured: immutable caching for fonts, images and hashed
+assets, plus `X-Content-Type-Options`, `Referrer-Policy`, `X-Frame-Options` and
+`Permissions-Policy`. Unknown paths serve `404.html`.
 
-`public/_headers` already sets immutable caching for fonts, images and hashed
-assets, plus `X-Content-Type-Options`, `Referrer-Policy` and `X-Frame-Options`.
+Pushes to `main` build in GitHub Actions and upload from there once
+`CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` exist as repository secrets;
+until then the run still builds and verifies, and skips the upload. CI fails the
+build if `dist/index.html` ever gains a third-party asset reference.
+
+### Custom domain
+
+The domain is on Namecheap nameservers and carries Namecheap **email
+forwarding** (`MX -> eforward*.registrar-servers.com` plus an SPF `TXT`). A
+Workers custom domain requires the zone to be active in Cloudflare, so moving
+the nameservers is the prerequisite — and those mail records must come across
+first or forwarding to the address on this site breaks.

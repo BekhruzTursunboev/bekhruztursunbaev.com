@@ -10,7 +10,9 @@
     "images": "node scripts/optimize-images.mjs",
     "og": "node scripts/make-og.mjs",
     "shots": "node scripts/shots.mjs",
-    "preview": "node scripts/preview.mjs .preview"
+    "preview": "node scripts/preview.mjs .preview",
+    "smoke": "node scripts/smoke.mjs",
+    "deploy": "npm run build && wrangler deploy"
   },
   "devDependencies": {
     "@tailwindcss/cli": "^4.3.3",
