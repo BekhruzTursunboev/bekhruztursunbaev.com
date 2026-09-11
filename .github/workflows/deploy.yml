@@ -1,0 +1,63 @@
+name: Deploy
+
+# Builds and ships to Cloudflare on every push to main. The build runs here
+# rather than on Cloudflare so the screenshot and image pipelines (which need
+# a headless browser) stay out of the deploy path -- generated assets are
+# committed, and this job only compiles and uploads.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    env:
+      # The `secrets` context cannot be read in a step-level `if`, so it is
+      # flattened to a boolean here. Until the two secrets are added in repo
+      # settings, the build and checks still run and the upload is skipped
+      # rather than failing the run.
+      HAS_CF_CREDS: ${{ secrets.CLOUDFLARE_API_TOKEN != '' && secrets.CLOUDFLARE_ACCOUNT_ID != '' }}
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - run: npm run build
+
+      - name: Fail if the build produced third-party requests
+        run: |
+          if grep -oE '(src|href)="https?://[^"]*' dist/index.html \
+             | grep -vE 'bekhruztursunbaev\.com' \
+             | grep -qE '\.(css|js|woff2?|png|jpe?g|avif|webp|svg)'; then
+            echo "::error::dist/index.html references a third-party asset."
+            exit 1
+          fi
+          echo "No third-party asset requests."
+
+      - name: Upload to Cloudflare
+        if: env.HAS_CF_CREDS == 'true'
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: deploy
+
+      - name: Explain the skip
+        if: env.HAS_CF_CREDS != 'true'
+        run: |
+          echo "::notice::Build verified but not deployed."
+          echo "Add CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID under"
+          echo "Settings -> Secrets and variables -> Actions to enable uploads."

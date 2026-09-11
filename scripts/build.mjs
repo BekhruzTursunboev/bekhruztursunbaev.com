@@ -8,7 +8,7 @@ import { execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import { cp, mkdir, readFile, rm, writeFile, readdir, stat } from "node:fs/promises";
 import { join, extname } from "node:path";
-import { renderPage } from "../src/render.mjs";
+import { renderPage, render404 } from "../src/render.mjs";
 
 const DIST = "dist";
 const hash = (buf) => createHash("sha256").update(buf).digest("hex").slice(0, 8);
@@ -63,6 +63,7 @@ await writeFile(join(DIST, jsName), js);
 await rm(scanFile);
 const html = renderPage({ cssHref: `/${cssName}`, jsHref: `/${jsName}`, fontKB, jsKB });
 await writeFile(join(DIST, "index.html"), html, "utf8");
+await writeFile(join(DIST, "404.html"), render404({ cssHref: `/${cssName}` }), "utf8");
 
 /* 7 ─ report */
 const walk = async (dir) => {

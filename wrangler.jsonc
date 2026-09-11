@@ -1,0 +1,16 @@
+{
+  // Cloudflare Workers Static Assets. Cloudflare folded Pages into Workers, so
+  // this is the current way to host a purely static build -- there is no
+  // `main` entry point because there is no server-side code at all.
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "bekhruztursunbaev",
+  "compatibility_date": "2026-09-11",
+  "assets": {
+    "directory": "./dist",
+    // Serve /404.html for unknown paths instead of Cloudflare's default page.
+    "not_found_handling": "404-page"
+  },
+  "observability": {
+    "enabled": true
+  }
+}

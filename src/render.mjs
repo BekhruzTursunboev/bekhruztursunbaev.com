@@ -602,6 +602,36 @@ const jsonLd = {
   sameAs: links.filter((l) => l.href.startsWith("http")).map((l) => l.href),
 };
 
+/** Minimal 404. Same tokens and type as the site, no scripts, no images. */
+export function render404({ cssHref }) {
+  return `<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Not found — ${esc(person.name)}</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<script>${themeScript}</script>
+<link rel="stylesheet" href="${esc(cssHref)}">
+</head>
+<body>
+<main class="shell grid min-h-[100dvh] place-items-center py-24">
+  <div class="max-w-xl">
+    <p class="eyebrow">Error 404</p>
+    <h1 class="display mt-6">This page does not <span class="accent-word">exist</span>.</h1>
+    <p class="lead mt-6">Nothing here. The link was probably wrong, or I moved something.</p>
+    <div class="mt-10 flex flex-wrap gap-3">
+      <a href="/" class="btn btn-primary"><span>Back to the site</span></a>
+      <a href="mailto:${esc(person.email)}" class="btn btn-ghost"><span>Tell me it is broken</span></a>
+    </div>
+  </div>
+</main>
+</body>
+</html>
+`;
+}
+
 export function renderPage({ cssHref, jsHref, fontKB = 0, jsKB = 0 }) {
   stats = { fontKB, jsKB };
   return `<!doctype html>
