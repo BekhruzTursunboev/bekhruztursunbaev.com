@@ -12,7 +12,8 @@
     "shots": "node scripts/shots.mjs",
     "preview": "node scripts/preview.mjs .preview",
     "smoke": "node scripts/smoke.mjs",
-    "deploy": "npm run build && wrangler deploy"
+    "deploy": "npm run build && wrangler deploy",
+    "logos": "node scripts/logos.mjs"
   },
   "devDependencies": {
     "@tailwindcss/cli": "^4.3.3",

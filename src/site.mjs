@@ -229,14 +229,21 @@ export const toolkit = [
   { group: "Practice", items: ["Git", "CI/CD", "Agile", "Accessibility"] },
 ];
 
+/**
+ * Logo dimensions are the intrinsic size of the files in public/logos, set so
+ * the browser reserves the right box before they load. Both are white-on-dark
+ * variants because the page renders them on a constant dark plate.
+ */
 export const education = {
   school: "Duke Kunshan University",
   note: "Undergraduate",
   period: "2026 — 2030",
+  logo: { src: "/logos/duke-kunshan.png", width: 120, height: 120 },
   prior: {
     school: "Target International School",
     note: "High school diploma, Business & IT",
     period: "2022 — 2026",
+    logo: { src: "/logos/target-international-school.png", width: 120, height: 120 },
     points: ["GPA 5.0 / 5.0", "Rank 3 of 150", "SAT 1520", "IELTS 7.0"],
   },
 };

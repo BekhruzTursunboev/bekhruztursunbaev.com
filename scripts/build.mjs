@@ -7,6 +7,7 @@
 import { execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import { cp, mkdir, readFile, rm, writeFile, readdir, stat } from "node:fs/promises";
+import { existsSync } from "node:fs";
 import { join, extname } from "node:path";
 import { renderPage, render404 } from "../src/render.mjs";
 
@@ -94,6 +95,16 @@ const emptyAlts = (html.match(/<img[^>]*alt=""[^>]*>/g) ?? []).length;
 if (emptyAlts) checks.push(`${emptyAlts} image(s) with empty alt`);
 const h1s = (html.match(/<h1[\s>]/g) ?? []).length;
 if (h1s !== 1) checks.push(`${h1s} h1 elements (want exactly 1)`);
+
+// Every same-origin asset the page names must actually be on disk. Renaming a
+// generated file without updating the markup is silent otherwise -- the page
+// still builds and only the image is missing.
+const referenced = new Set(
+  [...html.matchAll(/(?:src|href)="(\/[^"?#]+\.[a-z0-9]{2,5})"/gi)].map((m) => m[1])
+);
+for (const ref of [...referenced].sort()) {
+  if (!existsSync(join(DIST, ref))) checks.push(`missing asset: ${ref}`);
+}
 if (checks.length) {
   console.error(`\n  SEO problems:\n   - ${checks.join("\n   - ")}\n`);
   process.exitCode = 1;

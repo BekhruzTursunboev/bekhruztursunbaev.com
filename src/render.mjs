@@ -96,6 +96,37 @@ const monogram = `
     <circle cx="30.5" cy="27.5" r="2.6" fill="var(--accent)"/>
   </svg>`;
 
+/**
+ * One education row: institution logo on a dark plate, then the details.
+ * The plate is dark in both themes because both logos are white-on-dark
+ * variants -- the Target mark is white and red, and would vanish against the
+ * light theme's cream background.
+ */
+const eduEntry = ({ school, note, period, logo, points }) => `
+  <div class="edu-row flex items-start gap-4 border-b border-line py-5">
+    <span class="logo-plate">
+      <img src="${esc(logo.src)}" width="${logo.width}" height="${logo.height}"
+        alt="${esc(school)} logo" loading="lazy" decoding="async">
+    </span>
+    <div class="min-w-0 flex-1">
+      <p class="font-display text-[1.25rem] leading-tight font-bold tracking-tight">${esc(school)}</p>
+      <p class="mt-1 text-[0.9375rem] text-ink-2">${esc(note)}</p>
+      <p class="mono mt-2 text-[0.75rem] text-ink-3">${esc(period)}</p>
+      ${
+        points
+          ? `<ul class="mt-3.5 flex flex-wrap gap-x-2 gap-y-2">
+        ${points
+          .map(
+            (pt) =>
+              `<li class="mono rounded-full border border-line px-2.5 py-1 text-[0.75rem] text-ink-3">${esc(pt)}</li>`
+          )
+          .join("")}
+      </ul>`
+          : ""
+      }
+    </div>
+  </div>`;
+
 const stackList = (items) => `
   <ul class="flex flex-wrap gap-x-2 gap-y-2">
     ${items
@@ -457,24 +488,8 @@ const about = () => `
         <div class="reveal">
           <h3 class="eyebrow">Education</h3>
           <div class="mt-6 border-t border-line">
-            <div class="border-b border-line py-5">
-              <p class="font-display text-[1.25rem] font-bold tracking-tight">${esc(education.school)}</p>
-              <p class="mt-1 text-[0.9375rem] text-ink-2">${esc(education.note)}</p>
-              <p class="mono mt-2.5 text-[0.75rem] text-ink-3">${esc(education.period)}</p>
-            </div>
-            <div class="border-b border-line py-5">
-              <p class="font-display text-[1.25rem] font-bold tracking-tight">${esc(education.prior.school)}</p>
-              <p class="mt-1 text-[0.9375rem] text-ink-2">${esc(education.prior.note)}</p>
-              <p class="mono mt-2.5 text-[0.75rem] text-ink-3">${esc(education.prior.period)}</p>
-              <ul class="mt-4 flex flex-wrap gap-x-2 gap-y-2">
-                ${education.prior.points
-                  .map(
-                    (pt) =>
-                      `<li class="mono rounded-full border border-line px-2.5 py-1 text-[0.75rem] text-ink-3">${esc(pt)}</li>`
-                  )
-                  .join("")}
-              </ul>
-            </div>
+            ${eduEntry(education)}
+            ${eduEntry(education.prior)}
           </div>
         </div>
 
