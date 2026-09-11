@@ -1,0 +1,762 @@
+@import "tailwindcss";
+
+/* ============================================================================
+   FONTS — self-hosted.
+   Nothing here touches fonts.googleapis.com or cdn.fontshare.com at view time.
+   That is deliberate: Google Fonts is unreachable from mainland China, and this
+   site has readers on both sides of that. The whole family is 168 KB of woff2,
+   served from the same origin as the page.
+   ========================================================================== */
+
+@font-face {
+  font-family: "Cabinet Grotesk";
+  src: url("/fonts/CabinetGrotesk-500.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Cabinet Grotesk";
+  src: url("/fonts/CabinetGrotesk-700.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Cabinet Grotesk";
+  src: url("/fonts/CabinetGrotesk-800.woff2") format("woff2");
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Satoshi";
+  src: url("/fonts/Satoshi-400.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Satoshi";
+  src: url("/fonts/Satoshi-500.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Satoshi";
+  src: url("/fonts/Satoshi-700.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("/fonts/JetBrainsMono-var.woff2") format("woff2");
+  font-weight: 400 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Instrument Serif";
+  src: url("/fonts/InstrumentSerif-normal.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Instrument Serif";
+  src: url("/fonts/InstrumentSerif-italic.woff2") format("woff2");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* ============================================================================
+   TOKENS
+   One accent. One gray family (warm). No pure black, no pure white, no
+   decorative gradients anywhere in the sheet.
+   ========================================================================== */
+
+:root {
+  color-scheme: dark;
+
+  --surface-0: hsl(30 7% 7%);
+  --surface-1: hsl(30 6% 10%);
+  --surface-2: hsl(30 6% 14%);
+  --surface-3: hsl(30 6% 18%);
+
+  --text-primary: hsl(36 14% 96%);
+  --text-secondary: hsl(33 10% 80%);
+  --text-muted: hsl(32 8% 64%);
+
+  --border: hsl(30 6% 21%);
+  --border-strong: hsl(30 8% 42%);
+
+  --accent: hsl(24 92% 58%);
+  --accent-ink: hsl(26 95% 64%);
+  --accent-dim: hsl(24 92% 58% / 0.14);
+  --accent-border: hsl(24 92% 58% / 0.34);
+  --accent-contrast: hsl(30 20% 8%);
+
+  --grain-opacity: 0.032;
+
+  /* Fluid type. Deliberately larger than a default scale. */
+  --text-hero: clamp(3.25rem, 12vw, 10rem);
+  --text-display: clamp(2.75rem, 7.5vw, 6rem);
+  --text-title: clamp(2.125rem, 4.5vw, 3.75rem);
+  --text-heading: clamp(1.375rem, 2.2vw, 1.875rem);
+  --text-lead: clamp(1.3125rem, 2.2vw, 1.75rem);
+  --text-body: 1.1875rem;
+  --text-small: 1.0625rem;
+  --text-label: 0.8125rem;
+
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+
+  --gutter: clamp(1.25rem, 5vw, 5rem);
+  --measure: 62ch;
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+
+  --surface-0: hsl(38 24% 97%);
+  --surface-1: hsl(38 30% 99%);
+  --surface-2: hsl(36 16% 94%);
+  --surface-3: hsl(34 13% 89%);
+
+  --text-primary: hsl(28 14% 11%);
+  --text-secondary: hsl(30 9% 28%);
+  --text-muted: hsl(30 7% 40%);
+
+  --border: hsl(34 13% 88%);
+  --border-strong: hsl(32 10% 72%);
+
+  --accent: hsl(22 90% 47%);
+  --accent-ink: hsl(20 88% 38%);
+  --accent-dim: hsl(22 90% 47% / 0.1);
+  --accent-border: hsl(22 90% 47% / 0.3);
+  --accent-contrast: hsl(38 30% 99%);
+
+  --grain-opacity: 0.02;
+}
+
+@theme inline {
+  --color-surface-0: var(--surface-0);
+  --color-surface-1: var(--surface-1);
+  --color-surface-2: var(--surface-2);
+  --color-surface-3: var(--surface-3);
+  --color-ink: var(--text-primary);
+  --color-ink-2: var(--text-secondary);
+  --color-ink-3: var(--text-muted);
+  --color-line: var(--border);
+  --color-line-strong: var(--border-strong);
+  --color-accent: var(--accent);
+
+  --font-display: "Cabinet Grotesk", "Satoshi", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Satoshi", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --font-serif: "Instrument Serif", ui-serif, Georgia, serif;
+}
+
+/* ============================================================================
+   BASE
+   ========================================================================== */
+
+* {
+  border-color: var(--border);
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--surface-0);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: var(--text-body);
+  font-weight: 500;
+  line-height: 1.58;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: "ss01", "cv01";
+  overflow-x: clip;
+}
+
+/* Film grain. Fixed pseudo-element, never a scrolling container, so it costs
+   one composited layer and nothing else. The noise is an inline SVG filter —
+   no image request. */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  pointer-events: none;
+  opacity: var(--grain-opacity);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--accent-contrast);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+  font-weight: 800;
+  letter-spacing: -0.038em;
+  line-height: 1;
+  text-wrap: balance;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+
+/* Display accent. One serif italic word per heading is the cheapest way to make
+   a page stop reading like every other grotesk-only portfolio. Instrument Serif
+   runs optically small next to Cabinet Grotesk, so it is scaled up and nudged
+   back onto the baseline. */
+.accent-word {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-style: italic;
+  font-size: 1.14em;
+  /* Without this the taller serif grows the whole line box and blows the
+     heading's line spacing apart. */
+  line-height: 0.85;
+  letter-spacing: -0.005em;
+  color: var(--accent-ink);
+}
+
+/* Section display headings. These are <p>, so they would otherwise inherit the
+   body line-height rather than the tight heading one. */
+.display {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: var(--text-display);
+  line-height: 0.98;
+  letter-spacing: -0.038em;
+  text-wrap: balance;
+}
+
+/* Matching treatment for the hero's second line. */
+.hero-serif {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-style: italic;
+  letter-spacing: -0.015em;
+}
+
+/* ============================================================================
+   LAYOUT
+   ========================================================================== */
+
+.shell {
+  width: 100%;
+  max-width: 84rem;
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.rule {
+  border-top: 1px solid var(--border);
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625rem;
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent-ink);
+}
+/* Short rule before a section label, so headings read as a titled block. */
+.eyebrow::before {
+  content: "";
+  width: 1.75rem;
+  height: 1px;
+  background: var(--accent);
+  opacity: 0.55;
+}
+.eyebrow-plain::before {
+  display: none;
+}
+
+.lead {
+  font-size: var(--text-lead);
+  font-weight: 500;
+  line-height: 1.38;
+  letter-spacing: -0.015em;
+  color: var(--text-secondary);
+  max-width: var(--measure);
+  text-wrap: pretty;
+}
+
+.prose-measure {
+  max-width: var(--measure);
+  text-wrap: pretty;
+}
+
+.mono {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ============================================================================
+   MOTION
+   Every animation below moves only `transform`, `opacity`, `clip-path` or
+   `filter`. Nothing here can trigger layout.
+   ========================================================================== */
+
+/* --- Scroll reveal. JS adds `.in` when the element crosses the viewport. --- */
+.motion-ready .reveal {
+  opacity: 0;
+  transform: translate3d(0, 1.75rem, 0);
+  transition:
+    opacity 0.85s var(--ease-out),
+    transform 0.85s var(--ease-out);
+  transition-delay: calc(var(--i, 0) * 70ms);
+}
+.motion-ready .reveal.in {
+  opacity: 1;
+  transform: none;
+}
+
+/* --- Clip-path wipe, for headings and images. --- */
+/* The clip goes on the CHILD, never on the observed element itself.
+   IntersectionObserver factors an element's own clip-path into its intersection
+   rect, so clipping .wipe to zero height would make it permanently
+   non-intersecting -- hidden because it is hidden, and never revealed. */
+.wipe > * {
+  display: block;
+}
+.motion-ready .wipe > * {
+  clip-path: inset(0 0 100% 0);
+  transition: clip-path 1s var(--ease-out);
+  transition-delay: calc(var(--i, 0) * 70ms);
+}
+.motion-ready .wipe.in > * {
+  clip-path: inset(0 0 0 0);
+}
+
+/* --- Per-line mask reveal for the hero name. --- */
+.line-mask {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.06em;
+}
+.line-mask > span {
+  display: block;
+}
+.motion-ready .line-mask > span {
+  transform: translate3d(0, 105%, 0);
+  transition: transform 1.15s var(--ease-out);
+  transition-delay: calc(var(--i, 0) * 95ms);
+}
+.motion-ready .line-mask.in > span {
+  transform: none;
+}
+
+/* --- Magnetic pull. JS writes --mx/--my in px. --- */
+.magnetic {
+  transform: translate3d(var(--mx, 0px), var(--my, 0px), 0);
+  transition: transform 0.45s var(--ease-out);
+}
+.magnetic:active {
+  scale: 0.97;
+}
+
+/* --- Cursor spotlight on cards. JS writes --sx/--sy as percentages. --- */
+.spotlight {
+  position: relative;
+  isolation: isolate;
+}
+.spotlight::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: radial-gradient(
+    16rem circle at var(--sx, 50%) var(--sy, 0%),
+    var(--accent-border),
+    transparent 62%
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box exclude,
+    linear-gradient(#000 0 0);
+  mask:
+    linear-gradient(#000 0 0) content-box exclude,
+    linear-gradient(#000 0 0);
+  opacity: 0;
+  transition: opacity 0.4s var(--ease-out);
+  z-index: -1;
+}
+.spotlight:hover::before,
+.spotlight:focus-within::before {
+  opacity: 1;
+}
+
+/* --- Directional fill for buttons: clip-path, so no layout, no gradient. --- */
+.btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625rem;
+  overflow: hidden;
+  padding: 0.9375rem 1.5rem;
+  border-radius: 999px;
+  font-weight: 500;
+  font-size: var(--text-small);
+  letter-spacing: -0.01em;
+  transition:
+    transform 0.35s var(--ease-out),
+    border-color 0.35s var(--ease-out),
+    color 0.35s var(--ease-out);
+}
+.btn > * {
+  position: relative;
+  z-index: 1;
+}
+.btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: var(--accent);
+  clip-path: inset(0 0 100% 0);
+  transition: clip-path 0.5s var(--ease-out);
+}
+.btn:hover::before {
+  clip-path: inset(0 0 0 0);
+}
+.btn:hover {
+  color: var(--accent-contrast);
+}
+.btn:active {
+  transform: scale(0.975);
+}
+
+.btn-primary {
+  background: var(--text-primary);
+  color: var(--surface-0);
+  border: 1px solid var(--text-primary);
+}
+.btn-primary:hover {
+  border-color: var(--accent);
+}
+
+.btn-ghost {
+  border: 1px solid var(--border-strong);
+  color: var(--text-primary);
+}
+.btn-ghost:hover {
+  border-color: var(--accent);
+}
+
+/* --- Underline that draws in from the left. --- */
+.link-draw {
+  position: relative;
+  display: inline-block;
+}
+.link-draw::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 100%;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.45s var(--ease-out);
+}
+.link-draw:hover::after,
+.link-draw:focus-visible::after {
+  transform: scaleX(1);
+}
+
+/* --- Row hover: the arrow slides, the label shifts. --- */
+.row {
+  transition: background-color 0.4s var(--ease-out);
+}
+.row .row-shift {
+  transition: transform 0.5s var(--ease-out);
+}
+.row:hover .row-shift {
+  transform: translateX(0.625rem);
+}
+.row .row-arrow {
+  opacity: 0;
+  transform: translateX(-0.5rem);
+  transition:
+    opacity 0.4s var(--ease-out),
+    transform 0.4s var(--ease-out);
+}
+.row:hover .row-arrow,
+.row:focus-within .row-arrow {
+  opacity: 1;
+  transform: none;
+}
+
+/* --- Availability beacon. --- */
+@keyframes ping {
+  0% {
+    transform: scale(1);
+    opacity: 0.9;
+  }
+  70%,
+  100% {
+    transform: scale(2.6);
+    opacity: 0;
+  }
+}
+.ping {
+  position: relative;
+  display: inline-block;
+  width: 0.4375rem;
+  height: 0.4375rem;
+  border-radius: 999px;
+  background: var(--accent);
+}
+.ping::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--accent);
+  animation: ping 2.4s var(--ease-out) infinite;
+}
+
+/* --- Marquee for the toolkit strip. --- */
+@keyframes drift {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+.marquee {
+  display: flex;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+.marquee-track {
+  display: flex;
+  flex-shrink: 0;
+  gap: 3rem;
+  padding-right: 3rem;
+  animation: drift 42s linear infinite;
+  will-change: transform;
+}
+.marquee:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+/* --- Scroll progress hairline. --- */
+.progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2px;
+  width: 100%;
+  transform-origin: left;
+  transform: scaleX(var(--p, 0));
+  background: var(--accent);
+  z-index: 60;
+  pointer-events: none;
+}
+
+/* --- Nav condenses once the page scrolls. --- */
+.nav {
+  transition:
+    background-color 0.45s var(--ease-out),
+    border-color 0.45s var(--ease-out),
+    backdrop-filter 0.45s var(--ease-out);
+  border-bottom: 1px solid transparent;
+}
+.nav[data-stuck="true"] {
+  background: color-mix(in srgb, var(--surface-0) 82%, transparent);
+  backdrop-filter: blur(14px) saturate(140%);
+  border-bottom-color: var(--border);
+}
+
+.nav-link {
+  position: relative;
+  color: var(--text-secondary);
+  transition: color 0.3s var(--ease-out);
+}
+.nav-link:hover,
+.nav-link[data-active="true"] {
+  color: var(--text-primary);
+}
+.nav-link[data-active="true"]::before {
+  content: "";
+  position: absolute;
+  left: -0.75rem;
+  top: 50%;
+  width: 0.25rem;
+  height: 0.25rem;
+  margin-top: -0.125rem;
+  border-radius: 999px;
+  background: var(--accent);
+}
+
+/* --- Portrait: slow parallax drift driven by JS. --- */
+.portrait-frame {
+  position: relative;
+  overflow: hidden;
+  border-radius: 1.25rem;
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+}
+.portrait-frame img {
+  transform: translate3d(0, var(--shift, 0px), 0) scale(1.06);
+  transition: transform 0.8s var(--ease-out);
+}
+
+/* Skip link: offscreen until focused. */
+.skip-link {
+  position: fixed;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: 70;
+  padding: 0.625rem 1.25rem;
+  border-radius: 999px;
+  background: var(--surface-1);
+  color: var(--text-primary);
+  font-size: var(--text-small);
+  box-shadow: 0 0 0 1px var(--accent);
+  transform: translateY(-250%);
+  transition: transform 0.3s var(--ease-out);
+}
+.skip-link:focus-visible {
+  transform: none;
+}
+
+/* Theme button shows the icon for the theme it switches *to*. */
+.icon-moon {
+  display: none;
+}
+:root[data-theme="light"] .icon-sun {
+  display: none;
+}
+:root[data-theme="light"] .icon-moon {
+  display: block;
+}
+
+/* ---- product screenshots -------------------------------------------------- */
+.shot {
+  position: relative;
+  overflow: hidden;
+  border-radius: 0.875rem;
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+}
+.shot img {
+  transition: transform 0.7s var(--ease-out);
+}
+.shot-link:hover .shot img {
+  transform: scale(1.025);
+}
+/* Keeps a bright screenshot from fighting the dark page for attention. */
+.shot::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  box-shadow: inset 0 0 0 1px hsl(0 0% 100% / 0.05);
+  border-radius: inherit;
+  pointer-events: none;
+}
+.shot-blank {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 16 / 10;
+  background: var(--surface-1);
+}
+
+.card {
+  overflow: hidden;
+  border-radius: 1rem;
+  border: 1px solid var(--border);
+  background: var(--surface-1);
+  transition: border-color 0.4s var(--ease-out);
+}
+.card:hover {
+  border-color: var(--border-strong);
+}
+.card .shot {
+  border: 0;
+  border-radius: 0;
+  border-bottom: 1px solid var(--border);
+}
+
+/* ============================================================================
+   REDUCED MOTION
+   Anything decorative resolves to its finished state instantly. Nothing here
+   depends on an animation having run, so the page is complete without them.
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
+  }
+  .motion-ready .reveal,
+  .motion-ready .wipe > *,
+  .motion-ready .line-mask > span {
+    opacity: 1 !important;
+    transform: none !important;
+    clip-path: none !important;
+  }
+  .marquee-track {
+    animation: none !important;
+  }
+  .ping::after {
+    display: none;
+  }
+}
+
+@media print {
+  body::after,
+  .progress,
+  .nav {
+    display: none !important;
+  }
+}

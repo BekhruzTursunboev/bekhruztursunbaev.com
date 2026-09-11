@@ -1,0 +1,12 @@
+# Normalise line endings so checkouts on Windows and Linux CI produce identical
+# files -- the build hashes asset contents, so a stray CRLF would change them.
+* text=auto eol=lf
+
+*.png binary
+*.jpg binary
+*.JPG binary
+*.webp binary
+*.avif binary
+*.woff2 binary
+*.pdf binary
+*.ico binary

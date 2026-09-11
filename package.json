@@ -1,0 +1,20 @@
+{
+  "name": "bekhruztursunbaev-com",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Personal site of Bekhruz Tursunboev — full-stack & AI engineer.",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "dev": "node scripts/build.mjs && node scripts/serve-out.mjs",
+    "serve": "node scripts/serve-out.mjs",
+    "images": "node scripts/optimize-images.mjs",
+    "og": "node scripts/make-og.mjs",
+    "shots": "node scripts/shots.mjs",
+    "preview": "node scripts/preview.mjs .preview"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.3.3",
+    "playwright-core": "^1.63.0",
+    "sharp": "^0.35.4"
+  }
+}
