@@ -212,6 +212,10 @@ body::after {
   outline: 2px solid var(--accent);
   outline-offset: 3px;
   border-radius: 2px;
+  /* Tailwind v4's transition-colors includes outline-color, which fades the
+     ring in over 300ms from a near-invisible dark value. A focus indicator has
+     to appear at once, so nothing on a focused element transitions. */
+  transition-property: none;
 }
 
 h1,
@@ -273,6 +277,29 @@ img {
   font-weight: 400;
   font-style: italic;
   letter-spacing: -0.015em;
+}
+
+/* Colour cross-fade, applied by the theme button for the length of one switch
+   and then removed. Left on permanently it would smear every hover. */
+.theming,
+.theming *:not(.progress) {
+  transition:
+    background-color 0.32s var(--ease-out),
+    border-color 0.32s var(--ease-out),
+    color 0.32s var(--ease-out),
+    box-shadow 0.32s var(--ease-out) !important;
+}
+
+/* Media fades up once decoded rather than snapping in mid-scroll. Gated on
+   .motion-ready for the same reason the reveals are: the hidden state must only
+   exist in a browser that has the script to undo it. */
+.motion-ready .shot img,
+.motion-ready .portrait-frame img {
+  opacity: 0;
+}
+.motion-ready .shot img.loaded,
+.motion-ready .portrait-frame img.loaded {
+  opacity: 1;
 }
 
 /* ============================================================================
@@ -616,7 +643,9 @@ img {
 }
 .portrait-frame img {
   transform: translate3d(0, var(--shift, 0px), 0) scale(1.06);
-  transition: transform 0.8s var(--ease-out);
+  transition:
+    transform 0.8s var(--ease-out),
+    opacity 0.6s var(--ease-out);
 }
 
 /* Skip link: offscreen until focused. */
@@ -658,7 +687,9 @@ img {
   background: var(--surface-2);
 }
 .shot img {
-  transition: transform 0.7s var(--ease-out);
+  transition:
+    transform 0.7s var(--ease-out),
+    opacity 0.6s var(--ease-out);
 }
 .shot-link:hover .shot img {
   transform: scale(1.025);
@@ -725,6 +756,104 @@ img {
     0 6px 18px -8px hsl(30 20% 4% / 0.55);
 }
 
+/* ---- hit areas ------------------------------------------------------------ */
+/* WCAG 2.5.8 wants 24x24 minimum; touch guidance wants nearer 44. These pad the
+   clickable box out without changing how big the thing looks, using a negative
+   margin so layout is unaffected. */
+.tap {
+  padding: 0.625rem 0.25rem;
+  margin: -0.625rem -0.25rem;
+}
+.icon-btn {
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 999px;
+  color: var(--text-secondary);
+  transition:
+    color 0.3s var(--ease-out),
+    background-color 0.3s var(--ease-out);
+}
+.icon-btn:hover {
+  color: var(--text-primary);
+  background: var(--surface-2);
+}
+.icon-btn:active {
+  scale: 0.94;
+}
+
+/* ---- mobile section drawer ------------------------------------------------ */
+.menu-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 55;
+  background: hsl(30 20% 4% / 0.55);
+  backdrop-filter: blur(3px);
+  opacity: 0;
+  transition: opacity 0.35s var(--ease-out);
+}
+.menu-panel {
+  position: fixed;
+  inset-block: 0;
+  right: 0;
+  z-index: 56;
+  width: min(20rem, 86vw);
+  padding-bottom: 2rem;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background: var(--surface-1);
+  border-left: 1px solid var(--border);
+  box-shadow: -24px 0 60px -24px hsl(30 20% 4% / 0.5);
+  transform: translate3d(100%, 0, 0);
+  transition: transform 0.42s var(--ease-out);
+}
+[data-menu-open] .menu-backdrop {
+  opacity: 1;
+}
+[data-menu-open] .menu-panel {
+  transform: none;
+}
+
+.menu-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.0625rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+  font-family: var(--font-display);
+  font-size: 1.375rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  /* Each row eases in behind the panel, staggered, so the drawer has depth
+     rather than arriving as one flat slab. */
+  opacity: 0;
+  transform: translate3d(1rem, 0, 0);
+  transition:
+    opacity 0.4s var(--ease-out),
+    transform 0.4s var(--ease-out),
+    background-color 0.3s var(--ease-out);
+}
+[data-menu-open] .menu-link {
+  opacity: 1;
+  transform: none;
+  transition-delay: calc(0.1s + var(--i, 0) * 45ms);
+}
+.menu-link:active {
+  background: var(--surface-2);
+}
+.menu-link[data-active="true"] {
+  color: var(--accent-ink);
+}
+
+/* The drawer is inert until the script opens it, so it can never trap a reader
+   who has no JavaScript. */
+.menu-backdrop[hidden],
+.menu-panel[hidden] {
+  display: none !important;
+}
+
 /* ============================================================================
    REDUCED MOTION
    Anything decorative resolves to its finished state instantly. Nothing here
@@ -743,6 +872,10 @@ img {
     transition-duration: 0.01ms !important;
     transition-delay: 0ms !important;
   }
+  .motion-ready .shot img,
+  .motion-ready .portrait-frame img {
+    opacity: 1 !important;
+  }
   .motion-ready .reveal,
   .motion-ready .wipe > *,
   .motion-ready .line-mask > span {
@@ -752,6 +885,10 @@ img {
   }
   .marquee-track {
     animation: none !important;
+  }
+  .menu-link {
+    opacity: 1 !important;
+    transform: none !important;
   }
 }
 

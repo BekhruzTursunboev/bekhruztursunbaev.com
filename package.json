@@ -14,7 +14,8 @@
     "smoke": "node scripts/smoke.mjs",
     "deploy": "npm run build && wrangler deploy",
     "logos": "node scripts/logos.mjs",
-    "vitals": "node scripts/vitals.mjs"
+    "vitals": "node scripts/vitals.mjs",
+    "audit": "node scripts/audit.mjs"
   },
   "devDependencies": {
     "@tailwindcss/cli": "^4.3.3",

@@ -15,8 +15,18 @@
   /* ------------------------------------------------------------------ theme */
   var toggle = document.getElementById("theme-toggle");
   if (toggle) {
+    var themingTimer = 0;
     toggle.addEventListener("click", function () {
       var next = root.dataset.theme === "light" ? "dark" : "light";
+      // Arm the colour cross-fade for the length of this switch only; left on
+      // permanently it would smear every hover on the page.
+      if (!reduced) {
+        root.classList.add("theming");
+        clearTimeout(themingTimer);
+        themingTimer = setTimeout(function () {
+          root.classList.remove("theming");
+        }, 380);
+      }
       root.dataset.theme = next;
       try {
         localStorage.setItem("theme", next);
@@ -66,6 +76,107 @@
       });
     });
   }
+
+  /* ------------------------------------------------------------- menu drawer */
+  // The panel starts with the `hidden` attribute in the markup, so without this
+  // script it simply does not exist rather than sitting invisibly over the page.
+  var menuToggle = document.getElementById("menu-toggle");
+  var menuClose = document.getElementById("menu-close");
+  var panel = document.querySelector("[data-menu-panel]");
+  var backdrop = document.querySelector("[data-menu-backdrop]");
+
+  if (menuToggle && panel && backdrop) {
+    var menuOpen = false;
+
+    function setMenu(open) {
+      if (open === menuOpen) return;
+      menuOpen = open;
+
+      if (open) {
+        panel.hidden = false;
+        backdrop.hidden = false;
+        // Reading the layout forces a frame with the panel still offscreen, so
+        // the transform transition actually runs instead of being skipped.
+        void panel.offsetWidth;
+      }
+
+      root.toggleAttribute("data-menu-open", open);
+      menuToggle.setAttribute("aria-expanded", open ? "true" : "false");
+      menuToggle.setAttribute("aria-label", open ? "Close section menu" : "Open section menu");
+      // Lock the page behind the drawer without losing scroll position.
+      document.body.style.overflow = open ? "hidden" : "";
+
+      if (open) {
+        (menuClose || panel).focus({ preventScroll: true });
+      } else {
+        menuToggle.focus({ preventScroll: true });
+        // Wait out the slide before removing it from the tree.
+        window.setTimeout(function () {
+          if (!menuOpen) {
+            panel.hidden = true;
+            backdrop.hidden = true;
+          }
+        }, reduced ? 0 : 450);
+      }
+    }
+
+    if (menuClose) menuClose.setAttribute("tabindex", "0");
+    menuToggle.addEventListener("click", function () {
+      setMenu(!menuOpen);
+    });
+    if (menuClose) menuClose.addEventListener("click", function () { setMenu(false); });
+    backdrop.addEventListener("click", function () { setMenu(false); });
+
+    // Anchor links jump within the same page, so the drawer has to get out of
+    // the way itself.
+    Array.prototype.forEach.call(panel.querySelectorAll("[data-menu-link]"), function (link) {
+      link.addEventListener("click", function () { setMenu(false); });
+    });
+
+    document.addEventListener("keydown", function (event) {
+      if (!menuOpen) return;
+      if (event.key === "Escape") {
+        setMenu(false);
+        return;
+      }
+      if (event.key !== "Tab") return;
+      // Keep Tab inside the drawer while it is open.
+      var focusable = panel.querySelectorAll("a[href], button");
+      if (!focusable.length) return;
+      var first = focusable[0];
+      var last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    });
+
+    // Rotating to a wide viewport reveals the desktop nav; the drawer should go.
+    window.matchMedia("(min-width: 768px)").addEventListener("change", function (e) {
+      if (e.matches) setMenu(false);
+    });
+  }
+
+  /* ------------------------------------------------------------------ media */
+  // Fade each image up when it is actually decoded. Images already in cache
+  // fire `load` before this script runs, so `complete` has to be checked first
+  // or they would stay at zero opacity forever.
+  Array.prototype.forEach.call(document.querySelectorAll(".shot img, .portrait-frame img"), function (img) {
+    if (img.complete && img.naturalWidth) {
+      img.classList.add("loaded");
+      return;
+    }
+    img.addEventListener("load", function () {
+      img.classList.add("loaded");
+    });
+    // A broken image must not leave a permanently invisible hole.
+    img.addEventListener("error", function () {
+      img.classList.add("loaded");
+    });
+  });
 
   /* ---------------------------------------------------- scroll-driven chrome */
   var progress = document.querySelector("[data-progress]");

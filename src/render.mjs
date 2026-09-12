@@ -57,10 +57,16 @@ const icon = {
     `<svg viewBox="0 0 24 24" ${S} class="${c}"><path d="M7 17 17 7M9 7h8v8"/></svg>`,
   arrowDown: (c = "size-4") =>
     `<svg viewBox="0 0 24 24" ${S} class="${c}"><path d="M12 5v14M6 13l6 6 6-6"/></svg>`,
+  arrowRight: (c = "size-4") =>
+    `<svg viewBox="0 0 24 24" ${S} class="${c}"><path d="M5 12h14M13 6l6 6-6 6"/></svg>`,
   pin: (c = "size-3.5") =>
     `<svg viewBox="0 0 24 24" ${S} class="${c}"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 1 1 13 0c0 5.4-6.5 11-6.5 11Z"/><circle cx="12" cy="10" r="2.25"/></svg>`,
   sun: (c) =>
     `<svg viewBox="0 0 24 24" ${S} class="${c}"><circle cx="12" cy="12" r="4.25"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6 7 7M17 17l1.4 1.4M18.4 5.6 17 7M7 17l-1.4 1.4"/></svg>`,
+  menu: (c) =>
+    `<svg viewBox="0 0 24 24" ${S} class="${c}"><path d="M4 7h16M4 12h16M4 17h16"/></svg>`,
+  close: (c) =>
+    `<svg viewBox="0 0 24 24" ${S} class="${c}"><path d="M6 6l12 12M18 6 6 18"/></svg>`,
   moon: (c) =>
     `<svg viewBox="0 0 24 24" ${S} class="${c}"><path d="M20 14.2A8.2 8.2 0 1 1 9.8 4a6.6 6.6 0 0 0 10.2 10.2Z"/></svg>`,
   GitHub: (c) =>
@@ -146,7 +152,7 @@ const nav = () => `
 <a href="#work" class="skip-link">Skip to content</a>
 <header class="nav fixed inset-x-0 top-0 z-50" data-nav>
   <div class="shell flex h-16 items-center justify-between gap-6">
-    <a href="#top" class="flex items-center gap-2.5 text-ink" aria-label="Bekhruz Tursunboev, back to top">
+    <a href="#top" class="tap flex items-center gap-2.5 text-ink" aria-label="Bekhruz Tursunboev, back to top">
       ${monogram}
       <span class="font-display text-[1.0625rem] font-bold tracking-tight whitespace-nowrap">Bekhruz</span>
     </a>
@@ -160,16 +166,48 @@ const nav = () => `
           .join("")}
       </ul>
     </nav>
-    <div class="flex items-center gap-2.5">
-      <a href="${esc(person.cv)}" class="text-[0.9375rem] text-ink-2 transition-colors duration-300 hover:text-ink"><span class="link-draw">CV</span></a>
-      <button type="button" id="theme-toggle" aria-label="Switch between light and dark theme"
-        class="grid size-9 place-items-center rounded-full border border-line-strong text-ink-2 transition-colors duration-300 hover:border-accent hover:text-ink">
+    <div class="flex items-center gap-1">
+      <a href="${esc(person.cv)}" class="tap text-[0.9375rem] text-ink-2 transition-colors duration-300 hover:text-ink"><span class="link-draw">CV</span></a>
+      <button type="button" id="theme-toggle" aria-label="Switch between light and dark theme" class="icon-btn">
         ${icon.sun("size-[1.05rem] icon-sun")}
         ${icon.moon("size-[1.05rem] icon-moon")}
       </button>
+      <button type="button" id="menu-toggle" class="icon-btn md:hidden"
+        aria-label="Open section menu" aria-expanded="false" aria-controls="menu-panel">
+        ${icon.menu("size-[1.15rem]")}
+      </button>
     </div>
   </div>
-</header>`;
+</header>
+
+<!-- Mobile section menu. A drawer rather than a full-screen takeover, so the
+     page stays visible behind it and the reader keeps their place. -->
+<div class="menu-backdrop" data-menu-backdrop hidden></div>
+<div id="menu-panel" class="menu-panel" data-menu-panel hidden aria-label="Sections">
+  <div class="flex h-16 items-center justify-between pr-1 pl-6">
+    <span class="eyebrow eyebrow-plain">Sections</span>
+    <button type="button" id="menu-close" class="icon-btn" aria-label="Close section menu">
+      ${icon.close("size-[1.15rem]")}
+    </button>
+  </div>
+  <nav aria-label="Sections">
+    <ul class="border-t border-line">
+      ${sections
+        .map(
+          (sec, n) =>
+            `<li style="--i:${n}"><a href="#${sec.id}" class="menu-link" data-menu-link data-spy="${sec.id}">
+        <span>${esc(sec.label)}</span>${icon.arrowRight("size-[1.1rem] text-ink-3")}
+      </a></li>`
+        )
+        .join("")}
+    </ul>
+  </nav>
+  <div class="mt-8 px-6">
+    <a href="${esc(person.cv)}" class="btn btn-ghost w-full justify-center" target="_blank" rel="noopener">
+      <span>Curriculum vitae</span>${icon.arrowUpRight("size-4")}
+    </a>
+  </div>
+</div>`;
 
 const hero = () => `
 <section id="top" class="relative pt-28 pb-20 md:pt-32 md:pb-28">
@@ -293,12 +331,12 @@ const work = () => {
         <div class="reveal mt-8 flex flex-wrap items-center gap-x-5 gap-y-3" style="--i:4">
           ${
             p.live
-              ? `<a href="${esc(p.live)}" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 font-medium text-ink transition-colors duration-300 hover:text-accent-ink"><span class="link-draw">Live site</span>${icon.arrowUpRight()}</a>`
+              ? `<a href="${esc(p.live)}" target="_blank" rel="noopener" class="tap inline-flex items-center gap-1.5 font-medium text-ink transition-colors duration-300 hover:text-accent-ink"><span class="link-draw">Live site</span>${icon.arrowUpRight()}</a>`
               : ""
           }
           ${
             p.repo
-              ? `<a href="${esc(p.repo)}" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 text-ink-2 transition-colors duration-300 hover:text-accent-ink">${icon.GitHub("size-[1.0625rem]")}<span class="link-draw">Source</span></a>`
+              ? `<a href="${esc(p.repo)}" target="_blank" rel="noopener" class="tap inline-flex items-center gap-1.5 text-ink-2 transition-colors duration-300 hover:text-accent-ink">${icon.GitHub("size-[1.0625rem]")}<span class="link-draw">Source</span></a>`
               : ""
           }
         </div>
@@ -325,7 +363,7 @@ const work = () => {
         <div class="p-5">
           <div class="flex items-baseline justify-between gap-4">
             <h4 class="font-display text-[1.375rem] font-bold tracking-tight">${esc(p.name)}</h4>
-            <a href="${esc(href)}" target="_blank" rel="noopener" class="shrink-0 text-ink-3 transition-colors duration-300 hover:text-accent-ink" aria-label="${esc(p.name)} — open">${icon.arrowUpRight("size-[1.125rem]")}</a>
+            <a href="${esc(href)}" target="_blank" rel="noopener" class="tap shrink-0 text-ink-3 transition-colors duration-300 hover:text-accent-ink" aria-label="${esc(p.name)} — open">${icon.arrowUpRight("size-[1.125rem]")}</a>
           </div>
           <p class="mono mt-1.5 text-[0.75rem] text-ink-3">${esc(p.kind)} · ${esc(p.year)}</p>
           <p class="mt-3 text-[1rem] text-ink-2">${type(p.summary)}</p>
@@ -333,12 +371,12 @@ const work = () => {
           <div class="mt-5 flex flex-wrap items-center gap-x-5 gap-y-2 border-t border-line pt-4">
             ${
               p.live
-                ? `<a href="${esc(p.live)}" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 text-[0.9375rem] font-medium text-ink transition-colors duration-300 hover:text-accent-ink"><span class="link-draw">Live</span>${icon.arrowUpRight("size-[0.875rem]")}</a>`
+                ? `<a href="${esc(p.live)}" target="_blank" rel="noopener" class="tap inline-flex items-center gap-1.5 text-[0.9375rem] font-medium text-ink transition-colors duration-300 hover:text-accent-ink"><span class="link-draw">Live</span>${icon.arrowUpRight("size-[0.875rem]")}</a>`
                 : ""
             }
             ${
               p.repo
-                ? `<a href="${esc(p.repo)}" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 text-[0.9375rem] text-ink-2 transition-colors duration-300 hover:text-accent-ink">${icon.GitHub("size-[0.9375rem]")}<span class="link-draw">Source</span></a>`
+                ? `<a href="${esc(p.repo)}" target="_blank" rel="noopener" class="tap inline-flex items-center gap-1.5 text-[0.9375rem] text-ink-2 transition-colors duration-300 hover:text-accent-ink">${icon.GitHub("size-[0.9375rem]")}<span class="link-draw">Source</span></a>`
                 : ""
             }
           </div>
@@ -348,7 +386,7 @@ const work = () => {
         .join("")}
     </div>
 
-    <p class="reveal mt-8 text-ink-3">30-odd more on <a href="https://github.com/BekhruzTursunboev?tab=repositories" target="_blank" rel="noopener" class="text-ink transition-colors duration-300 hover:text-accent-ink"><span class="link-draw">GitHub</span></a> — games, Telegram bots, experiments.</p>
+    <p class="reveal mt-8 text-ink-3">30-odd more on <a href="https://github.com/BekhruzTursunboev?tab=repositories" target="_blank" rel="noopener" class="tap text-ink transition-colors duration-300 hover:text-accent-ink"><span class="link-draw">GitHub</span></a> — games, Telegram bots, experiments.</p>
   </div>
 </section>`;
 };
@@ -521,7 +559,7 @@ const about = () => `
           <div class="flex items-baseline justify-between gap-4 border-b border-line py-3"><dt class="text-[0.875rem] text-ink-3">JavaScript shipped</dt><dd class="mono text-[0.8125rem]">${stats.jsKB} KB</dd></div>
           <div class="flex items-baseline justify-between gap-4 border-b border-line py-3"><dt class="text-[0.875rem] text-ink-3">Fonts, self-hosted</dt><dd class="mono text-[0.8125rem]">${stats.fontKB} KB</dd></div>
           <div class="flex items-baseline justify-between gap-4 border-b border-line py-3"><dt class="text-[0.875rem] text-ink-3">Domain</dt><dd class="mono text-[0.8125rem]">${esc(person.domain)}</dd></div>
-          <div class="flex items-baseline justify-between gap-4 border-b border-line py-3"><dt class="text-[0.875rem] text-ink-3">Source</dt><dd class="mono text-[0.8125rem]"><a href="${esc(person.repo)}" target="_blank" rel="noopener" class="text-ink transition-colors duration-300 hover:text-accent-ink"><span class="link-draw">on GitHub ${"↗"}</span></a></dd></div>
+          <div class="flex items-baseline justify-between gap-4 border-b border-line py-3"><dt class="text-[0.875rem] text-ink-3">Source</dt><dd class="mono text-[0.8125rem]"><a href="${esc(person.repo)}" target="_blank" rel="noopener" class="tap text-ink transition-colors duration-300 hover:text-accent-ink"><span class="link-draw">on GitHub ${"↗"}</span></a></dd></div>
         </dl>
       </div>
     </div>
