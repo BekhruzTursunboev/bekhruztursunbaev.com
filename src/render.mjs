@@ -184,7 +184,7 @@ const hero = () => `
     </h1>
 
     <p class="reveal mono mt-6 text-[0.8125rem] text-ink-3" style="--i:3">
-      <span lang="uz">${esc(person.nameUz)}</span><span class="mx-2.5 text-line-strong">/</span>${esc(person.pronunciation)}
+      <span lang="uz">${esc(person.nameUz)}</span><span class="mx-2.5 text-ink-3">/</span>${esc(person.pronunciation)}
     </p>
 
     <div class="mt-12 grid gap-12 md:mt-14 md:grid-cols-12 md:gap-10">
@@ -220,7 +220,7 @@ const hero = () => `
         .map(
           (item, n) => `
         <div class="reveal grid gap-1.5 border-b border-line py-5 sm:grid-cols-12 sm:gap-6" ${i(n)}>
-          <dt class="mono text-[0.8125rem] tracking-wide text-accent sm:col-span-3 sm:pt-1">${esc(item.label)}</dt>
+          <dt class="mono text-[0.8125rem] tracking-wide text-accent-ink sm:col-span-3 sm:pt-1">${esc(item.label)}</dt>
           <dd class="prose-measure text-ink-2 sm:col-span-9">${type(item.text)}</dd>
         </div>`
         )
@@ -257,7 +257,7 @@ const work = () => {
       <div class="${flip ? "md:col-span-5 md:row-start-1 md:pr-4" : "md:col-span-5 md:pl-4"}">
         <p class="mono text-[0.8125rem] text-ink-3">${pad(n + 1)} / ${esc(p.year)}</p>
         <h3 class="reveal display mt-3" style="font-size:var(--text-title)">${esc(p.name)}</h3>
-        <p class="mt-2 font-medium text-accent">${esc(p.kind)}</p>
+        <p class="mt-2 font-medium text-accent-ink">${esc(p.kind)}</p>
         <p class="reveal mt-5 text-ink-2" style="--i:1">${type(p.summary)}</p>
 
         ${
@@ -281,7 +281,7 @@ const work = () => {
           ${p.detail
             .map(
               (d, dn) => `<li class="flex gap-4">
-            <span class="mono shrink-0 pt-1 text-[0.75rem] text-accent">${pad(dn + 1)}</span>
+            <span class="mono shrink-0 pt-1 text-[0.75rem] text-accent-ink">${pad(dn + 1)}</span>
             <p class="text-[1.0625rem] text-ink-2">${type(d)}</p>
           </li>`
             )
@@ -293,12 +293,12 @@ const work = () => {
         <div class="reveal mt-8 flex flex-wrap items-center gap-x-5 gap-y-3" style="--i:4">
           ${
             p.live
-              ? `<a href="${esc(p.live)}" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 font-medium text-ink transition-colors duration-300 hover:text-accent"><span class="link-draw">Live site</span>${icon.arrowUpRight()}</a>`
+              ? `<a href="${esc(p.live)}" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 font-medium text-ink transition-colors duration-300 hover:text-accent-ink"><span class="link-draw">Live site</span>${icon.arrowUpRight()}</a>`
               : ""
           }
           ${
             p.repo
-              ? `<a href="${esc(p.repo)}" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 text-ink-2 transition-colors duration-300 hover:text-accent">${icon.GitHub("size-[1.0625rem]")}<span class="link-draw">Source</span></a>`
+              ? `<a href="${esc(p.repo)}" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 text-ink-2 transition-colors duration-300 hover:text-accent-ink">${icon.GitHub("size-[1.0625rem]")}<span class="link-draw">Source</span></a>`
               : ""
           }
         </div>
@@ -325,7 +325,7 @@ const work = () => {
         <div class="p-5">
           <div class="flex items-baseline justify-between gap-4">
             <h4 class="font-display text-[1.375rem] font-bold tracking-tight">${esc(p.name)}</h4>
-            <a href="${esc(href)}" target="_blank" rel="noopener" class="shrink-0 text-ink-3 transition-colors duration-300 hover:text-accent" aria-label="${esc(p.name)} — open">${icon.arrowUpRight("size-[1.125rem]")}</a>
+            <a href="${esc(href)}" target="_blank" rel="noopener" class="shrink-0 text-ink-3 transition-colors duration-300 hover:text-accent-ink" aria-label="${esc(p.name)} — open">${icon.arrowUpRight("size-[1.125rem]")}</a>
           </div>
           <p class="mono mt-1.5 text-[0.75rem] text-ink-3">${esc(p.kind)} · ${esc(p.year)}</p>
           <p class="mt-3 text-[1rem] text-ink-2">${type(p.summary)}</p>
@@ -333,12 +333,12 @@ const work = () => {
           <div class="mt-5 flex flex-wrap items-center gap-x-5 gap-y-2 border-t border-line pt-4">
             ${
               p.live
-                ? `<a href="${esc(p.live)}" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 text-[0.9375rem] font-medium text-ink transition-colors duration-300 hover:text-accent"><span class="link-draw">Live</span>${icon.arrowUpRight("size-[0.875rem]")}</a>`
+                ? `<a href="${esc(p.live)}" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 text-[0.9375rem] font-medium text-ink transition-colors duration-300 hover:text-accent-ink"><span class="link-draw">Live</span>${icon.arrowUpRight("size-[0.875rem]")}</a>`
                 : ""
             }
             ${
               p.repo
-                ? `<a href="${esc(p.repo)}" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 text-[0.9375rem] text-ink-2 transition-colors duration-300 hover:text-accent">${icon.GitHub("size-[0.9375rem]")}<span class="link-draw">Source</span></a>`
+                ? `<a href="${esc(p.repo)}" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 text-[0.9375rem] text-ink-2 transition-colors duration-300 hover:text-accent-ink">${icon.GitHub("size-[0.9375rem]")}<span class="link-draw">Source</span></a>`
                 : ""
             }
           </div>
@@ -348,7 +348,7 @@ const work = () => {
         .join("")}
     </div>
 
-    <p class="reveal mt-8 text-ink-3">30-odd more on <a href="https://github.com/BekhruzTursunboev?tab=repositories" target="_blank" rel="noopener" class="text-ink transition-colors duration-300 hover:text-accent"><span class="link-draw">GitHub</span></a> — games, Telegram bots, experiments.</p>
+    <p class="reveal mt-8 text-ink-3">30-odd more on <a href="https://github.com/BekhruzTursunboev?tab=repositories" target="_blank" rel="noopener" class="text-ink transition-colors duration-300 hover:text-accent-ink"><span class="link-draw">GitHub</span></a> — games, Telegram bots, experiments.</p>
   </div>
 </section>`;
 };
@@ -371,7 +371,7 @@ const experienceSection = () => `
           <p class="mono mt-4 text-[0.75rem] tracking-wide text-ink-3">${esc(role.period)}</p>
         </div>
         <div class="md:col-span-8">
-          <p class="text-[1.0625rem] font-medium text-accent">${esc(role.role)}</p>
+          <p class="text-[1.0625rem] font-medium text-accent-ink">${esc(role.role)}</p>
           <ul class="mt-4 space-y-3">
             ${role.points
               .map(
@@ -412,7 +412,7 @@ const beyond = () => `
               <div class="row-shift">
                 <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
                   <h3 class="font-display text-[1.375rem] font-bold tracking-tight">${esc(entry.name)}</h3>
-                  ${entry.href ? icon.arrowUpRight("row-arrow size-4 shrink-0 text-accent") : ""}
+                  ${entry.href ? icon.arrowUpRight("row-arrow size-4 shrink-0 text-accent-ink") : ""}
                 </div>
                 <p class="mono mt-1.5 text-[0.75rem] text-ink-3">${esc(entry.role)} · ${esc(entry.period)}</p>
                 <p class="prose-measure mt-3 text-[0.9375rem] text-ink-2">${type(entry.text)}</p>
@@ -454,7 +454,7 @@ const beyond = () => `
         .map(
           (group, n) => `
       <div class="reveal border-t border-line pt-5" ${i(n)}>
-        <h4 class="mono text-[0.75rem] tracking-widest text-accent uppercase">${esc(group.group)}</h4>
+        <h4 class="mono text-[0.75rem] tracking-widest text-accent-ink uppercase">${esc(group.group)}</h4>
         <ul class="mt-3 flex flex-wrap gap-x-3 gap-y-1.5">
           ${group.items.map((it) => `<li class="text-[0.9375rem] text-ink-2">${esc(it)}</li>`).join("")}
         </ul>
@@ -521,7 +521,7 @@ const about = () => `
           <div class="flex items-baseline justify-between gap-4 border-b border-line py-3"><dt class="text-[0.875rem] text-ink-3">JavaScript shipped</dt><dd class="mono text-[0.8125rem]">${stats.jsKB} KB</dd></div>
           <div class="flex items-baseline justify-between gap-4 border-b border-line py-3"><dt class="text-[0.875rem] text-ink-3">Fonts, self-hosted</dt><dd class="mono text-[0.8125rem]">${stats.fontKB} KB</dd></div>
           <div class="flex items-baseline justify-between gap-4 border-b border-line py-3"><dt class="text-[0.875rem] text-ink-3">Domain</dt><dd class="mono text-[0.8125rem]">${esc(person.domain)}</dd></div>
-          <div class="flex items-baseline justify-between gap-4 border-b border-line py-3"><dt class="text-[0.875rem] text-ink-3">Source</dt><dd class="mono text-[0.8125rem]"><a href="${esc(person.repo)}" target="_blank" rel="noopener" class="text-ink transition-colors duration-300 hover:text-accent"><span class="link-draw">on GitHub ${"↗"}</span></a></dd></div>
+          <div class="flex items-baseline justify-between gap-4 border-b border-line py-3"><dt class="text-[0.875rem] text-ink-3">Source</dt><dd class="mono text-[0.8125rem]"><a href="${esc(person.repo)}" target="_blank" rel="noopener" class="text-ink transition-colors duration-300 hover:text-accent-ink"><span class="link-draw">on GitHub ${"↗"}</span></a></dd></div>
         </dl>
       </div>
     </div>
@@ -568,7 +568,7 @@ const contact = () => `
                 <span class="text-[0.9375rem] text-ink">${esc(link.name)}</span>
                 <span class="mono truncate text-[0.8125rem] text-ink-3">${esc(link.handle)}</span>
               </span>
-              ${icon.arrowUpRight("row-arrow size-4 shrink-0 text-accent")}
+              ${icon.arrowUpRight("row-arrow size-4 shrink-0 text-accent-ink")}
             </a>
           </li>`;
             })
@@ -718,6 +718,10 @@ export function renderPage({ cssHref, jsHref, fontKB = 0, jsKB = 0 }) {
 <link rel="icon" href="/favicon-32.png" sizes="32x32">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 
+<link rel="preload" as="image" type="image/avif" fetchpriority="high"
+  href="/img/portrait-640.avif"
+  imagesrcset="/img/portrait-420.avif 420w, /img/portrait-640.avif 640w, /img/portrait-880.avif 880w"
+  imagesizes="(min-width:1024px) 22rem, (min-width:768px) 32vw, 18rem">
 <link rel="preload" href="/fonts/CabinetGrotesk-800.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/fonts/InstrumentSerif-italic.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/fonts/Satoshi-400.woff2" as="font" type="font/woff2" crossorigin>

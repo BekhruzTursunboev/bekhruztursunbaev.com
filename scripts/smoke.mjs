@@ -6,7 +6,7 @@
 //   node scripts/smoke.mjs [url]
 import { chromium } from "playwright-core";
 
-const target = process.argv[2] ?? "https://bekhruztursunbaev.tursunbaevbexruz19.workers.dev/";
+const target = process.argv[2] ?? "https://bekhruztursunbaev.com/";
 const origin = new URL(target).host;
 
 // Some networks (including the author's) have broken IPv6, and Chromium prefers

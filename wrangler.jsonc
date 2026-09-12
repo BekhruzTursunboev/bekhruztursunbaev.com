@@ -10,6 +10,18 @@
     // Serve /404.html for unknown paths instead of Cloudflare's default page.
     "not_found_handling": "404-page"
   },
+  // Custom domains are declared here rather than clicked in the dashboard, so
+  // the hostnames this Worker answers on live in version control alongside it.
+  //
+  // Both hostnames serve the same content. A 301 from www to the apex would be
+  // marginally tidier, but Workers static assets only allows relative URLs in
+  // _redirects, so it would mean putting a Worker script in front of every
+  // request. The canonical link in the page head already tells search engines
+  // which host counts, which is what the redirect would have been for.
+  "routes": [
+    { "pattern": "bekhruztursunbaev.com", "custom_domain": true },
+    { "pattern": "www.bekhruztursunbaev.com", "custom_domain": true }
+  ],
   "observability": {
     "enabled": true
   }

@@ -153,6 +153,10 @@
   --color-line: var(--border);
   --color-line-strong: var(--border-strong);
   --color-accent: var(--accent);
+  /* Text-safe accent. --accent is tuned for fills and borders and only reaches
+     3.41:1 on the light theme's cream, which fails WCAG AA for body text;
+     --accent-ink is the darker pair that clears it at 5.18:1. */
+  --color-accent-ink: var(--accent-ink);
 
   --font-display: "Cabinet Grotesk", "Satoshi", ui-sans-serif, system-ui, sans-serif;
   --font-sans: "Satoshi", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
