@@ -15,10 +15,12 @@
     "deploy": "npm run build && wrangler deploy",
     "logos": "node scripts/logos.mjs",
     "vitals": "node scripts/vitals.mjs",
-    "audit": "node scripts/audit.mjs"
+    "audit": "node scripts/audit.mjs",
+    "fonts": "node scripts/fonts.mjs"
   },
   "devDependencies": {
     "@tailwindcss/cli": "^4.3.3",
+    "fontkit": "^2.0.4",
     "playwright-core": "^1.63.0",
     "sharp": "^0.35.4",
     "wrangler": "^4.131.0"

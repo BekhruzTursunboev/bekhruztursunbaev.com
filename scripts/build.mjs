@@ -10,6 +10,7 @@ import { cp, mkdir, readFile, rm, writeFile, readdir, stat } from "node:fs/promi
 import { existsSync } from "node:fs";
 import { join, extname } from "node:path";
 import { renderPage, render404 } from "../src/render.mjs";
+import { LANGS, DEFAULT_LANG, langPath } from "../src/i18n.mjs";
 
 const DIST = "dist";
 const hash = (buf) => createHash("sha256").update(buf).digest("hex").slice(0, 8);
@@ -60,57 +61,92 @@ const js = await readFile(join("src", "motion.js"));
 const jsName = `assets/motion.${hash(js)}.js`;
 await writeFile(join(DIST, jsName), js);
 
-/* 6 ─ the real page */
+/* 6 ─ one complete page per language: English at /, the rest at /<lang>/ */
 await rm(scanFile);
-const html = renderPage({ cssHref: `/${cssName}`, jsHref: `/${jsName}`, fontKB, jsKB });
-await writeFile(join(DIST, "index.html"), html, "utf8");
+const pages = [];
+for (const lang of LANGS) {
+  const markup = renderPage({ cssHref: `/${cssName}`, jsHref: `/${jsName}`, fontKB, jsKB, lang });
+  const dir = lang === DEFAULT_LANG ? DIST : join(DIST, lang);
+  await mkdir(dir, { recursive: true });
+  await writeFile(join(dir, "index.html"), markup, "utf8");
+  pages.push({ lang, path: `${langPath(lang)}index.html`, markup });
+}
+// A single 404 in the default language: the server cannot know which language a
+// wrong URL was aiming at.
 await writeFile(join(DIST, "404.html"), render404({ cssHref: `/${cssName}` }), "utf8");
 
-/* 7 ─ sitemap, stamped with the build date so crawlers see it change */
+/* 7 ─ sitemap: every language, each declaring the others as alternates */
 const today = new Date().toISOString().slice(0, 10);
+const ORIGIN = "https://bekhruztursunbaev.com";
+const entries = LANGS.map((lang) => {
+  const alternates = LANGS.map(
+    (l) => `    <xhtml:link rel="alternate" hreflang="${l}" href="${ORIGIN}${langPath(l)}"/>`
+  ).join("\n");
+  return `  <url>
+    <loc>${ORIGIN}${langPath(lang)}</loc>
+${alternates}
+    <xhtml:link rel="alternate" hreflang="x-default" href="${ORIGIN}${langPath(DEFAULT_LANG)}"/>
+    <lastmod>${today}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>${lang === DEFAULT_LANG ? "1.0" : "0.8"}</priority>
+  </url>`;
+}).join("\n");
 await writeFile(
   join(DIST, "sitemap.xml"),
   `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://bekhruztursunbaev.com/</loc>
-    <lastmod>${today}</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>1.0</priority>
-  </url>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+${entries}
 </urlset>
 `,
   "utf8"
 );
 
-/* 8 ─ guard the things that quietly rot: metadata length, alt text, canonical */
+/* 8 ─ guard the things that quietly rot, on every language */
 const checks = [];
-const titleText = (html.match(/<title>(.*?)<\/title>/s) ?? [])[1] ?? "";
-const descText = (html.match(/<meta name="description" content="(.*?)"/s) ?? [])[1] ?? "";
-if (titleText.length > 60) checks.push(`title is ${titleText.length} chars (>60)`);
-if (descText.length > 160) checks.push(`meta description is ${descText.length} chars (>160)`);
-if (!html.includes('rel="canonical"')) checks.push("no canonical link");
-if (!html.includes('name="robots"')) checks.push("no robots meta");
-const emptyAlts = (html.match(/<img[^>]*alt=""[^>]*>/g) ?? []).length;
-if (emptyAlts) checks.push(`${emptyAlts} image(s) with empty alt`);
-const h1s = (html.match(/<h1[\s>]/g) ?? []).length;
-if (h1s !== 1) checks.push(`${h1s} h1 elements (want exactly 1)`);
+for (const page of pages) {
+  const html = page.markup;
+  const tag = `[${page.lang}]`;
+  const titleText = (html.match(/<title>(.*?)<\/title>/s) ?? [])[1] ?? "";
+  const descText = (html.match(/<meta name="description" content="(.*?)"/s) ?? [])[1] ?? "";
+  if (titleText.length > 60) checks.push(`${tag} title is ${titleText.length} chars (>60)`);
+  if (descText.length > 160) checks.push(`${tag} meta description is ${descText.length} chars (>160)`);
+  if (!html.includes('rel="canonical"')) checks.push(`${tag} no canonical link`);
+  if (!html.includes('name="robots"')) checks.push(`${tag} no robots meta`);
+  if (!html.includes('hreflang="x-default"')) checks.push(`${tag} no x-default hreflang`);
+  const emptyAlts = (html.match(/<img[^>]*alt=""[^>]*>/g) ?? []).length;
+  if (emptyAlts) checks.push(`${tag} ${emptyAlts} image(s) with empty alt`);
+  const h1s = (html.match(/<h1[\s>]/g) ?? []).length;
+  if (h1s !== 1) checks.push(`${tag} ${h1s} h1 elements (want exactly 1)`);
+  if (/\bundefined\b/.test(html)) {
+    checks.push(`${tag} the word "undefined" reached the markup`);
+  }
+  // Uzbek here is written in Latin script. A stray Cyrillic homoglyph -- an
+  // a, e or o that looks identical but is not -- renders from a fallback
+  // font and visibly breaks the word. One had already slipped into the copy.
+  const cyrillic = html.match(/[Ѐ-ӿ]/g);
+  if (cyrillic) {
+    const seen = [...new Set(cyrillic)]
+      .map((ch) => `U+${ch.codePointAt(0).toString(16).toUpperCase()}`)
+      .join(", ");
+    checks.push(`${tag} Cyrillic characters in Latin copy: ${seen}`);
+  }
 
 // Every same-origin asset the page names must actually be on disk. Renaming a
 // generated file without updating the markup is silent otherwise -- the page
 // still builds and only the image is missing.
-const referenced = new Set(
-  [...html.matchAll(/(?:src|href)="(\/[^"?#]+\.[a-z0-9]{2,5})"/gi)].map((m) => m[1])
-);
-for (const ref of [...referenced].sort()) {
-  if (!existsSync(join(DIST, ref))) checks.push(`missing asset: ${ref}`);
+  const referenced = new Set(
+    [...html.matchAll(/(?:src|href)="(\/[^"?#]+\.[a-z0-9]{2,5})"/gi)].map((m) => m[1])
+  );
+  for (const ref of [...referenced].sort()) {
+    if (!existsSync(join(DIST, ref))) checks.push(`${tag} missing asset: ${ref}`);
+  }
 }
 if (checks.length) {
   console.error(`\n  SEO problems:\n   - ${checks.join("\n   - ")}\n`);
   process.exitCode = 1;
 } else {
   console.log(
-    `\n  seo ok — title ${titleText.length}c, description ${descText.length}c, 1 h1, every image has alt`
+    `\n  seo ok — ${pages.map((x) => x.lang).join(" + ")}, canonical + hreflang, 1 h1 each, every image has alt`
   );
 }
 
