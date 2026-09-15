@@ -79,6 +79,29 @@ for (const lang of LANGS) {
   await writeFile(join(dir, "404.html"), render404({ cssHref: `/${cssName}`, lang }), "utf8");
 }
 
+/* 6b ─ Content-Security-Policy script hashes
+   The only executable inline script is the theme bootstrap, which has to run
+   before first paint. Its hash is computed from the markup that was actually
+   written, not from a copy of the source, so the policy cannot drift from the
+   page. Structured data (type="application/ld+json") is not executed and needs
+   no hash. */
+const inlineHashes = new Set();
+for (const file of LANGS.flatMap((lang) => {
+  const dir = lang === DEFAULT_LANG ? DIST : join(DIST, lang);
+  return [join(dir, "index.html"), join(dir, "404.html")];
+})) {
+  const markup = await readFile(file, "utf8");
+  for (const [, body] of markup.matchAll(/<script>([\s\S]*?)<\/script>/g)) {
+    inlineHashes.add(`'sha256-${createHash("sha256").update(body, "utf8").digest("base64")}'`);
+  }
+}
+const headersPath = join(DIST, "_headers");
+const headers = await readFile(headersPath, "utf8");
+if (!headers.includes("__CSP_SCRIPT_HASHES__")) {
+  throw new Error("public/_headers has no __CSP_SCRIPT_HASHES__ placeholder for the CSP");
+}
+await writeFile(headersPath, headers.replace("__CSP_SCRIPT_HASHES__", [...inlineHashes].join(" ")), "utf8");
+
 /* 7 ─ sitemap: every language, each declaring the others as alternates */
 const today = new Date().toISOString().slice(0, 10);
 const ORIGIN = "https://bekhruztursunbaev.com";

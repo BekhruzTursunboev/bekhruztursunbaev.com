@@ -256,7 +256,7 @@ const hero = () => `
       <span lang="uz">${esc(person.nameUz)}</span><span class="mx-2.5 text-ink-3">/</span>${esc(person.pronunciation)}
     </p>
 
-    <div class="mt-12 grid gap-12 md:mt-14 md:grid-cols-12 md:gap-10">
+    <div class="mt-12 grid grid-cols-1 gap-12 md:mt-14 md:grid-cols-12 md:gap-10">
       <div class="md:col-span-7 lg:col-span-6">
         <p class="reveal lead text-ink" style="--i:0">${type(c(intro.lead))}</p>
         <p class="reveal prose-measure mt-6 text-ink-2" style="--i:1">${type(c(intro.body))}</p>
@@ -288,7 +288,7 @@ const hero = () => `
       ${currently
         .map(
           (item, n) => `
-        <div class="reveal grid gap-1.5 border-b border-line py-5 sm:grid-cols-12 sm:gap-6" ${i(n)}>
+        <div class="reveal grid grid-cols-1 gap-1.5 border-b border-line py-5 sm:grid-cols-12 sm:gap-6" ${i(n)}>
           <dt class="mono text-[0.875rem] tracking-wide text-accent-ink sm:col-span-3 sm:pt-1">${esc(c(item.label))}</dt>
           <dd class="prose-measure text-ink-2 sm:col-span-9">${type(c(item.text))}</dd>
         </div>`
@@ -316,7 +316,7 @@ const work = () => {
       .map((p, n) => {
         const flip = n % 2 === 1;
         return `
-    <article class="grid items-start gap-8 md:grid-cols-12 md:gap-10">
+    <article class="grid grid-cols-1 items-start gap-8 md:grid-cols-12 md:gap-10">
       <div class="${flip ? "md:col-span-7 md:col-start-6" : "md:col-span-7"}">
         <a href="${esc(p.live ?? p.repo)}" target="_blank" rel="noopener" class="shot-link spotlight block" aria-label="Open ${esc(p.name)}, ${esc(c(p.kind))}">
           ${shot(p.slug, "(min-width:768px) 56vw, 92vw", n === 0, `${p.name} screenshot — ${c(p.kind)} built by ${person.name}`)}
@@ -381,7 +381,7 @@ const work = () => {
 
   <div class="shell mt-24 md:mt-32">
     <h3 class="eyebrow reveal">${esc(T.alsoBuilt)}</h3>
-    <div class="mt-8 grid gap-6 sm:grid-cols-2">
+    <div class="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2">
       ${rest
         .map((p, n) => {
           const href = p.live ?? p.repo;
@@ -433,7 +433,7 @@ const experienceSection = () => `
       ${experience
         .map(
           (role, n) => `
-      <li class="reveal grid gap-5 border-b border-line py-10 md:grid-cols-12 md:gap-10" ${i(n)}>
+      <li class="reveal grid grid-cols-1 gap-5 border-b border-line py-10 md:grid-cols-12 md:gap-10" ${i(n)}>
         <div class="md:col-span-4">
           <h3 class="font-display text-[1.5rem] leading-tight font-bold tracking-tight">${esc(role.org)}</h3>
           ${c(role.orgNote) ? `<p class="mt-1.5 text-[1rem] text-ink-3">${esc(c(role.orgNote))}</p>` : ""}
@@ -468,7 +468,7 @@ const beyond = () => `
       <p class="reveal lead mt-6" style="--i:1">${esc(T.beyondLead)}</p>
     </header>
 
-    <div class="mt-16 grid gap-16 md:mt-20 md:grid-cols-12 md:gap-12">
+    <div class="mt-16 grid grid-cols-1 gap-16 md:mt-20 md:grid-cols-12 md:gap-12">
       <div class="md:col-span-7">
         <ul class="border-t border-line">
           ${community
@@ -518,7 +518,7 @@ const beyond = () => `
       <h3 class="eyebrow reveal">${esc(T.toolkit)}</h3>
       <p class="reveal mt-4 text-ink-3">${esc(T.toolkitLead)}</p>
     </div>
-    <div class="shell mt-10 grid gap-x-10 gap-y-8 sm:grid-cols-2 lg:grid-cols-3">
+    <div class="shell mt-10 grid grid-cols-1 gap-x-10 gap-y-8 sm:grid-cols-2 lg:grid-cols-3">
       ${toolkit
         .map(
           (group, n) => `
@@ -544,7 +544,7 @@ const about = () => `
       <p class="reveal display mt-5">${esc(T.aboutHeadA)} <span class="accent-word">${esc(T.aboutHeadAccent)}</span>${esc(T.aboutHeadB)}</p>
     </header>
 
-    <div class="mt-16 grid gap-16 md:mt-20 md:grid-cols-12 md:gap-12">
+    <div class="mt-16 grid grid-cols-1 gap-16 md:mt-20 md:grid-cols-12 md:gap-12">
       <div class="md:col-span-6">
         <div class="reveal space-y-5">
           <p class="lead">${esc(T.aboutLead)}</p>
@@ -581,7 +581,7 @@ const about = () => `
 
     <div class="reveal mt-28 border-t border-line pt-10 md:mt-36">
       <h3 class="eyebrow">${esc(T.colophon)}</h3>
-      <div class="mt-6 grid gap-x-12 gap-y-8 md:grid-cols-12">
+      <div class="mt-6 grid grid-cols-1 gap-x-12 gap-y-8 md:grid-cols-12">
         <p class="prose-measure text-ink-2 md:col-span-7">${fill(esc(T.colophonBody), { selfHosted: `<em class="text-ink not-italic">${esc(T.colophonSelfHosted)}</em>` })}</p>
         <dl class="md:col-span-4 md:col-start-9">
           <div class="flex items-baseline justify-between gap-4 border-b border-line py-3"><dt class="text-[0.9375rem] text-ink-3">${esc(T.statThirdParty)}</dt><dd class="mono text-[0.875rem]">0</dd></div>
@@ -609,7 +609,7 @@ const contact = () => `
 
 <section id="contact" class="scroll-mt-24 py-24 md:py-32">
   <div class="shell">
-    <div class="grid gap-16 md:grid-cols-12 md:gap-12">
+    <div class="grid grid-cols-1 gap-16 md:grid-cols-12 md:gap-12">
       <div class="md:col-span-6">
         <h2 class="eyebrow reveal">${esc(T.contact)}</h2>
         <p class="reveal display mt-5">${esc(T.contactHeadA)} <span class="accent-word">${esc(T.contactHeadAccent)}</span>.</p>
