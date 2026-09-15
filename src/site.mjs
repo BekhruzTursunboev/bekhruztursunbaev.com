@@ -31,8 +31,8 @@ export const intro = {
     uz: "AI’ga asoslangan full-stack mahsulotlar yarataman.",
   },
   body: {
-    en: "Four are live. Each one started with somebody in Tashkent stuck on a problem a spreadsheet could not fix.",
-    uz: "To’rttasi hozir ishlamoqda. Har biri Toshkentda odamlar Excel jadvali bilan hal qila olmagan muammodan boshlangan.",
+    en: "Four are live: an AI tutor, a property valuation tool, a revenue tracker and an economics simulator.",
+    uz: "To’rttasi ishlamoqda: AI repetitor, uy narxini baholash vositasi, daromad hisobi tizimi va iqtisodiyot simulyatori.",
   },
 };
 
@@ -82,19 +82,17 @@ export const projects = [
     kind: { en: "AI tutoring platform", uz: "AI repetitorlik platformasi" },
     year: { en: "2025 — present", uz: "2025 — hozir" },
     summary: {
-      en: "Private tutoring in Uzbekistan is in-person and expensive. This answers the questions instead, across eight subjects.",
-      uz: "O’zbekistonda repetitorlik qimmat va faqat yuzma-yuz bo’ladi. ZiyoBuddy sakkiz fan bo’yicha savollarga javob beradi.",
+      en: "An AI tutor that answers students’ questions across eight subjects.",
+      uz: "Sakkiz fan bo’yicha o’quvchilarning savollariga javob beradigan AI repetitor.",
     },
     detail: {
       en: [
-        "Batched API layer instead of one request per question. That is what holds response time near two seconds under concurrent load.",
-        "Accuracy came from prompt structure, not model choice — rebuilding how subject context is assembled moved it up by a third.",
-        "Would rebuild: context is still assembled per request. Caching it per session cuts latency and cost.",
+        "API calls are batched and concurrent sessions handled in parallel — that is where the uptime and response time above come from.",
+        "Prompt optimisation raised answer accuracy by 35%.",
       ],
       uz: [
-        "Har bir savolga alohida so’rov yuborilmaydi — so’rovlar guruhlab yuboriladi. Shuning uchun bir vaqtda ko’p foydalanuvchi bo’lsa ham javob ikki soniya atrofida keladi.",
-        "Aniqlik modelni almashtirish orqali emas, promptlar tuzilishini o’zgartirish orqali oshdi — taxminan uchdan bir qismga.",
-        "Qayta qilsam: kontekst hozircha har so’rovda qaytadan yig’iladi. Uni sessiya davomida keshlash tezlikni oshirib, xarajatni kamaytiradi.",
+        "API so’rovlari guruhlab yuboriladi va sessiyalar parallel ishlaydi — yuqoridagi uzluksiz ishlash va javob vaqti shunga bog’liq.",
+        "Promptlarni optimallashtirish javoblar aniqligini 35% ga oshirdi.",
       ],
     },
     metrics: [
@@ -114,19 +112,17 @@ export const projects = [
     kind: { en: "Property valuation tool", uz: "Uy narxini baholash vositasi" },
     year: { en: "2025 — present", uz: "2025 — hozir" },
     summary: {
-      en: "Uzbekistan has no public house-price index, so buyers negotiate blind. This scrapes three marketplaces and scores a home on fourteen factors.",
-      uz: "O’zbekistonda uy narxlari bo’yicha ochiq indeks yo’q, shuning uchun xaridorlar narxni taxmin bilan kelishadi. MulkTahlilchi uchta e’lon saytidan ma’lumot olib, uyni 14 ta mezon bo’yicha baholaydi.",
+      en: "An AI tool that estimates home prices in Uzbekistan.",
+      uz: "O’zbekistonda uy narxini baholaydigan AI vosita.",
     },
     detail: {
       en: [
-        "Fourteen weighted factors — district, floor, age, area, renovation — because the per-square-metre average is what misleads buyers.",
-        "Three marketplaces, three layouts. Scrapers are versioned separately, so a broken one degrades its source instead of the valuation.",
-        "The model was never the hard part. Sellers list aspirational prices, so asking price is a signal, not truth.",
+        "Scores each home with a 14-factor pricing algorithm.",
+        "Uses live listing data from three Uzbek marketplaces.",
       ],
       uz: [
-        "14 ta mezon hisobga olinadi — tuman, qavat, bino yoshi, maydon, ta’mir. Kvadrat metr bo’yicha o’rtacha narx xaridorni chalg’itadi, shuning uchun unga tayanilmaydi.",
-        "Uchta saytning tuzilishi har xil, shuning uchun har biriga alohida skraper yozilgan. Bittasi ishdan chiqsa, faqat o’sha manba to’xtaydi, baholash emas.",
-        "Eng qiyin qismi model emas edi. Sotuvchilar narxni oshirib yozadi, shuning uchun e’londagi narx haqiqiy narx emas, faqat taxminiy ko’rsatkich sifatida olinadi.",
+        "Har bir uyni 14 mezonli narx algoritmi bilan baholaydi.",
+        "Uchta o’zbek e’lon saytidan jonli ma’lumot oladi.",
       ],
     },
     metrics: [
@@ -188,8 +184,8 @@ export const projects = [
     kind: { en: "Trilingual school site", uz: "Uch tilli maktab sayti" },
     year: "2026",
     summary: {
-      en: "Three languages, five months, still the school's front door.",
-      uz: "Uch tilda, besh oyda yaratilgan va hozir ham maktabning asosiy sayti.",
+      en: "A three-language website for my school, built over five months.",
+      uz: "Maktabim uchun uch tilli sayt, besh oyda yaratilgan.",
     },
     stack: ["JavaScript", "Tailwind CSS", "HTML/CSS"],
     live: "https://target-international-school.vercel.app",
