@@ -63,6 +63,10 @@ const c = (value) => pick(value, L);
 /** Path to the same page in another language. */
 const other = () => LANGS.find((x) => x !== L);
 
+/** The share card for a language: og.png for the default, og-<lang>.png otherwise. */
+const ogFor = (lang) =>
+  `${person.url}/${lang === DEFAULT_LANG ? "og.png" : `og-${lang}.png`}`;
+
 const pad = (n) => String(n).padStart(2, "0");
 const ext = (href) => (href.startsWith("http") ? ' target="_blank" rel="noopener"' : "");
 const i = (n) => `style="--i:${n}"`;
@@ -196,7 +200,8 @@ const nav = () => `
       <a href="${langPath(other())}" class="lang-switch" hreflang="${other()}"
         aria-label="${esc(T.langSwitchAria)}" data-lang-switch>${esc(langMeta[other()].short)}</a>
       <button type="button" id="menu-toggle" class="icon-btn menu-btn"
-        aria-label="${esc(T.menuOpen)}" aria-expanded="false" aria-controls="menu-panel">
+        aria-label="${esc(T.menuOpen)}" data-label-open="${esc(T.menuOpen)}" data-label-close="${esc(T.menuClose)}"
+        aria-expanded="false" aria-controls="menu-panel">
         ${icon.menu("size-[1.15rem]")}
       </button>
     </div>
@@ -708,7 +713,7 @@ const jsonLd = (lang, href, meta) => ({
       name: `${person.name} — ${person.role}`,
       isPartOf: { "@id": `${person.url}/#website` },
       about: { "@id": `${person.url}/#person` },
-      primaryImageOfPage: `${person.url}/og.png`,
+      primaryImageOfPage: ogFor(lang),
     },
   ],
 });
@@ -775,14 +780,14 @@ ${LANGS.map((l) => `<link rel="alternate" hreflang="${langMeta[l].htmlLang}" hre
 <meta property="og:site_name" content="${esc(person.domain)}">
 <meta property="og:locale" content="${meta.ogLocale}">
 ${LANGS.filter((l) => l !== lang).map((l) => `<meta property="og:locale:alternate" content="${langMeta[l].ogLocale}">`).join("\n")}
-<meta property="og:image" content="${esc(person.url)}/og.png">
+<meta property="og:image" content="${esc(ogFor(lang))}">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="${esc(person.name)}, ${esc(person.role)}">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="${esc(person.name)} — ${esc(person.role)}">
 <meta name="twitter:description" content="${esc(intro.lead)}">
-<meta name="twitter:image" content="${esc(person.url)}/og.png">
+<meta name="twitter:image" content="${esc(ogFor(lang))}">
 
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/favicon-32.png" sizes="32x32">

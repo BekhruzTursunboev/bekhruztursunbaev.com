@@ -25,15 +25,25 @@ npm run build     # -> dist/
 npm run serve     # preview dist/ on :4321
 npm run images    # regenerate the portrait from personal_shoot.JPG
 npm run shots     # re-screenshot every live project
-npm run og        # regenerate the social share card
+npm run og        # render the share cards, one per language, in the site's own fonts
+npm run fonts     # re-fetch the webfonts and check they carry the required glyphs
+npm run logos     # re-fetch the institution logos
+npm run vitals    # LCP, CLS and WCAG contrast on the deployed site, both themes
+npm run audit     # touch targets, focus order, reduced motion (needs npm run serve)
 ```
 
 ## Editing content
 
-Every fact on the page lives in [`src/site.mjs`](src/site.mjs) — nothing is
-duplicated in markup, so a number, date or link is changed in exactly one place.
-`src/render.mjs` turns that into HTML, `src/styles.css` holds the design tokens,
-`src/motion.js` is the whole client runtime.
+Every fact lives in [`src/site.mjs`](src/site.mjs) and every interface string in
+[`src/i18n.mjs`](src/i18n.mjs) — nothing is duplicated in markup, so a number,
+date, link or label is changed in exactly one place. `src/render.mjs` turns them
+into HTML, `src/styles.css` holds the design tokens, `src/motion.js` is the whole
+client runtime.
+
+The site is built in English at `/` and Uzbek at `/uz/`, each a complete page
+with its own 404 and share card. A field that reads the same in both languages
+is a plain string; one that differs is `{ en, uz }`. The Uzbek copy uses U+2019
+for the oʻ and gʻ marks, because none of the webfonts carry U+02BB.
 
 ## Deploying
 

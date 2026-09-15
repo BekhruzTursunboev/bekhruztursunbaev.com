@@ -108,6 +108,10 @@ export const ui = {
 
     footerNote: "Built from scratch. No template, no page builder.",
 
+    ogPlace: "Kunshan, China",
+    ogRole: "Full-stack & AI engineer",
+    ogTagline: "AI tutoring · property valuation · revenue tools",
+
     notFoundTitle: "Not found",
     notFoundHeadA: "This page does not",
     notFoundHeadAccent: "exist",
@@ -188,6 +192,10 @@ export const ui = {
     telegram: "Telegram",
 
     footerNote: "Noldan yozilgan. Shablon ham, sayt yasovchi ham yo’q.",
+
+    ogPlace: "Kunshan, Xitoy",
+    ogRole: "Full-stack va AI injineri",
+    ogTagline: "AI repetitorlik · mulk baholash · daromad vositalari",
 
     notFoundTitle: "Topilmadi",
     notFoundHeadA: "Bunday sahifa",

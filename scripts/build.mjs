@@ -71,9 +71,13 @@ for (const lang of LANGS) {
   await writeFile(join(dir, "index.html"), markup, "utf8");
   pages.push({ lang, path: `${langPath(lang)}index.html`, markup });
 }
-// A single 404 in the default language: the server cannot know which language a
-// wrong URL was aiming at.
-await writeFile(join(DIST, "404.html"), render404({ cssHref: `/${cssName}` }), "utf8");
+// One 404 per language. Workers serves the nearest 404.html walking up the
+// path, so a dead link under /uz/ gets the Uzbek page and anything else gets
+// English, with no routing code.
+for (const lang of LANGS) {
+  const dir = lang === DEFAULT_LANG ? DIST : join(DIST, lang);
+  await writeFile(join(dir, "404.html"), render404({ cssHref: `/${cssName}`, lang }), "utf8");
+}
 
 /* 7 ─ sitemap: every language, each declaring the others as alternates */
 const today = new Date().toISOString().slice(0, 10);
@@ -140,6 +144,10 @@ for (const page of pages) {
   for (const ref of [...referenced].sort()) {
     if (!existsSync(join(DIST, ref))) checks.push(`${tag} missing asset: ${ref}`);
   }
+  // The share card is referenced by absolute URL, so the loop above cannot see
+  // it. A missing one would make every link preview in that language blank.
+  const card = page.lang === DEFAULT_LANG ? "og.png" : `og-${page.lang}.png`;
+  if (!existsSync(join(DIST, card))) checks.push(`${tag} missing share card: /${card}`);
 }
 if (checks.length) {
   console.error(`\n  SEO problems:\n   - ${checks.join("\n   - ")}\n`);

@@ -102,7 +102,13 @@
 
       root.toggleAttribute("data-menu-open", open);
       menuToggle.setAttribute("aria-expanded", open ? "true" : "false");
-      menuToggle.setAttribute("aria-label", open ? "Close section menu" : "Open section menu");
+      // Labels come from the markup so they are in the page's own language. A
+      // literal here flipped the Uzbek page's label back to English on first open.
+      menuToggle.setAttribute(
+        "aria-label",
+        (open ? menuToggle.dataset.labelClose : menuToggle.dataset.labelOpen) ||
+          menuToggle.getAttribute("aria-label")
+      );
       // Lock the page behind the drawer without losing scroll position.
       document.body.style.overflow = open ? "hidden" : "";
 
