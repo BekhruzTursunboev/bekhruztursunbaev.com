@@ -39,13 +39,15 @@ jobs:
 
       - name: Fail if the build produced third-party requests
         run: |
-          if grep -oE '(src|href)="https?://[^"]*' dist/index.html \
+          # Every built page, not just index.html: the Uzbek page and both 404s
+          # are served too, and a leak in any of them breaks the same promise.
+          if grep -roE --include='*.html' '(src|href)="https?://[^"]*' dist \
              | grep -vE 'bekhruztursunbaev\.com' \
              | grep -qE '\.(css|js|woff2?|png|jpe?g|avif|webp|svg)'; then
-            echo "::error::dist/index.html references a third-party asset."
+            echo "::error::A built page references a third-party asset."
             exit 1
           fi
-          echo "No third-party asset requests."
+          echo "No third-party asset requests in any built page."
 
       - name: Upload to Cloudflare
         if: env.HAS_CF_CREDS == 'true'
