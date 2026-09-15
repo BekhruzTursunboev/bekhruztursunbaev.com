@@ -28,49 +28,49 @@ export const person = {
 export const intro = {
   lead: {
     en: "I build full-stack products with AI inside them.",
-    uz: "Men ichida AI bo’lgan full-stack mahsulotlar yarataman.",
+    uz: "AI’ga asoslangan full-stack mahsulotlar yarataman.",
   },
   body: {
     en: "Four are live. Each one started with somebody in Tashkent stuck on a problem a spreadsheet could not fix.",
-    uz: "To’rttasi ishlab turadi. Har biri Toshkentda kimningdir jadval yecha olmagan muammosidan boshlangan.",
+    uz: "To’rttasi hozir ishlamoqda. Har biri Toshkentda odamlar Excel jadvali bilan hal qila olmagan muammodan boshlangan.",
   },
 };
 
 export const availability = {
   detail: {
     en: "Taking on freelance full-stack work.",
-    uz: "Frilans full-stack ishlarni qabul qilaman.",
+    uz: "Frilans full-stack loyihalarni qabul qilaman.",
   },
 };
 
 /** The "what I'm doing right now" block. Keep it to four lines and keep it true. */
 export const currently = [
   {
-    label: { en: "Engineering", uz: "Injinerlik" },
+    label: { en: "Engineering", uz: "Ish" },
     text: {
       en: "Software & database engineer at 55 KVARTAL, Tashkent. 430+ listings on a platform I built.",
-      uz: "55 KVARTAL (Toshkent) da dasturiy ta’minot va ma’lumotlar bazasi injineri. O’zim qurgan platformada 430+ e’lon.",
+      uz: "55 KVARTAL (Toshkent) kompaniyasida dasturiy ta’minot va ma’lumotlar bazasi muhandisiman. U yerdagi 430+ e’lon men yaratgan platformada ishlaydi.",
     },
   },
   {
-    label: { en: "Building", uz: "Yaratilmoqda" },
+    label: { en: "Building", uz: "Loyiha" },
     text: {
       en: "ZiyoBuddy — an AI tutor. 8,000 requests a month, 125+ learners.",
       uz: "ZiyoBuddy — AI repetitor. Oyiga 8,000 so’rov, 125+ o’quvchi.",
     },
   },
   {
-    label: { en: "Studying", uz: "Ta’lim" },
+    label: { en: "Studying", uz: "O’qish" },
     text: {
       en: "Undergraduate at Duke Kunshan University.",
-      uz: "Duke Kunshan universitetining bakalavr talabasi.",
+      uz: "Duke Kunshan University’da bakalavriatda o’qiyman.",
     },
   },
   {
     label: { en: "Running", uz: "Jamoalar" },
     text: {
       en: "Target Coders (36 members) and VocabVibe (1,500+ learners).",
-      uz: "Target Coders (36 a’zo) va VocabVibe (1,500+ o’quvchi).",
+      uz: "Target Coders (36 a’zo) va VocabVibe (1,500+ o’quvchi) jamoalarini boshqaraman.",
     },
   },
 ];
@@ -80,10 +80,10 @@ export const projects = [
     slug: "ziyobuddy",
     name: "ZiyoBuddy",
     kind: { en: "AI tutoring platform", uz: "AI repetitorlik platformasi" },
-    year: "2025 — present",
+    year: { en: "2025 — present", uz: "2025 — hozir" },
     summary: {
       en: "Private tutoring in Uzbekistan is in-person and expensive. This answers the questions instead, across eight subjects.",
-      uz: "O’zbekistonda repetitorlik yuzma-yuz va qimmat. Bu esa sakkiz fan bo’yicha savollarga javob beradi.",
+      uz: "O’zbekistonda repetitorlik qimmat va faqat yuzma-yuz bo’ladi. ZiyoBuddy sakkiz fan bo’yicha savollarga javob beradi.",
     },
     detail: {
       en: [
@@ -92,16 +92,16 @@ export const projects = [
         "Would rebuild: context is still assembled per request. Caching it per session cuts latency and cost.",
       ],
       uz: [
-        "Har bir savolga alohida so’rov emas, guruhlangan API qatlami. Shu narsa bir nechta sessiya bir vaqtda ishlaganda javob vaqtini ikki sekund atrofida ushlab turadi.",
-        "Aniqlik model tanlashdan emas, prompt tuzilishidan keldi — fan kontekstining yig’ilish usulini qayta qurish uni uchdan biriga oshirdi.",
-        "Qayta qurardim: kontekst hali ham har so’rovda yig’iladi. Sessiya bo’yicha keshlash kechikish va xarajatni kamaytiradi.",
+        "Har bir savolga alohida so’rov yuborilmaydi — so’rovlar guruhlab yuboriladi. Shuning uchun bir vaqtda ko’p foydalanuvchi bo’lsa ham javob ikki soniya atrofida keladi.",
+        "Aniqlik modelni almashtirish orqali emas, promptlar tuzilishini o’zgartirish orqali oshdi — taxminan uchdan bir qismga.",
+        "Qayta qilsam: kontekst hozircha har so’rovda qaytadan yig’iladi. Uni sessiya davomida keshlash tezlikni oshirib, xarajatni kamaytiradi.",
       ],
     },
     metrics: [
       { value: "125+", label: { en: "learners", uz: "o’quvchi" } },
       { value: "8,000", label: { en: "requests / month", uz: "so’rov / oy" } },
       { value: "99.7%", label: { en: "uptime", uz: "uzluksiz ishlash" } },
-      { value: "2.3s", label: { en: "avg. response", uz: "o’rtacha javob" } },
+      { value: "2.3s", label: { en: "avg. response", uz: "o’rtacha javob vaqti" } },
     ],
     stack: ["TypeScript", "Next.js", "PostgreSQL", "AI APIs"],
     live: "https://ziyobuddy.vercel.app",
@@ -111,11 +111,11 @@ export const projects = [
   {
     slug: "mulktahlilchi",
     name: "MulkTahlilchi",
-    kind: { en: "Property valuation tool", uz: "Ko’chmas mulk baholash vositasi" },
-    year: "2025 — present",
+    kind: { en: "Property valuation tool", uz: "Uy narxini baholash vositasi" },
+    year: { en: "2025 — present", uz: "2025 — hozir" },
     summary: {
       en: "Uzbekistan has no public house-price index, so buyers negotiate blind. This scrapes three marketplaces and scores a home on fourteen factors.",
-      uz: "O’zbekistonda uy narxlarining ommaviy indeksi yo’q, shuning uchun xaridorlar ko’r-ko’rona savdolashadi. Bu uchta bozordan ma’lumot yig’ib, uyni o’n to’rt mezon bo’yicha baholaydi.",
+      uz: "O’zbekistonda uy narxlari bo’yicha ochiq indeks yo’q, shuning uchun xaridorlar narxni taxmin bilan kelishadi. MulkTahlilchi uchta e’lon saytidan ma’lumot olib, uyni 14 ta mezon bo’yicha baholaydi.",
     },
     detail: {
       en: [
@@ -124,16 +124,16 @@ export const projects = [
         "The model was never the hard part. Sellers list aspirational prices, so asking price is a signal, not truth.",
       ],
       uz: [
-        "O’n to’rt vaznli mezon — tuman, qavat, yoshi, maydoni, ta’miri — chunki xaridorni chalg’itadigan narsa kvadrat metr o’rtachasi.",
-        "Uchta bozor, uchta turli tuzilma. Skraperlar alohida versiyalanadi, shuning uchun biri buzilsa faqat o’sha manba zarar ko’radi, baholash emas.",
-        "Model hech qachon qiyin qismi bo’lmagan. Sotuvchilar orzu qilgan narxni qo’yadi, shuning uchun so’ralgan narx — signal, haqiqat emas.",
+        "14 ta mezon hisobga olinadi — tuman, qavat, bino yoshi, maydon, ta’mir. Kvadrat metr bo’yicha o’rtacha narx xaridorni chalg’itadi, shuning uchun unga tayanilmaydi.",
+        "Uchta saytning tuzilishi har xil, shuning uchun har biriga alohida skraper yozilgan. Bittasi ishdan chiqsa, faqat o’sha manba to’xtaydi, baholash emas.",
+        "Eng qiyin qismi model emas edi. Sotuvchilar narxni oshirib yozadi, shuning uchun e’londagi narx haqiqiy narx emas, faqat taxminiy ko’rsatkich sifatida olinadi.",
       ],
     },
     metrics: [
-      { value: "300+", label: { en: "buyers helped", uz: "xaridorga yordam" } },
+      { value: "300+", label: { en: "buyers helped", uz: "xaridor" } },
       { value: "400+", label: { en: "homes valued", uz: "baholangan uy" } },
       { value: "14", label: { en: "pricing factors", uz: "narx mezoni" } },
-      { value: "3", label: { en: "live data sources", uz: "jonli manba" } },
+      { value: "3", label: { en: "live data sources", uz: "ma’lumot manbai" } },
     ],
     stack: ["Python", "Next.js", "TypeScript", "Web scraping"],
     live: "https://mulktahlilchi.vercel.app",
@@ -143,11 +143,11 @@ export const projects = [
   {
     slug: "revtrak",
     name: "RevTrak",
-    kind: { en: "Revenue & task tracking", uz: "Daromad va vazifalar nazorati" },
+    kind: { en: "Revenue & task tracking", uz: "Daromad va vazifalarni kuzatish" },
     year: "2024",
     summary: {
       en: "Transactions, deadlines and analytics in one place, with a model that flags payments likely to slip. Won Ajou Technovate, Teenhack and Yosh Startaperlar.",
-      uz: "Tranzaksiyalar, muddatlar va tahlil bir joyda; kechikishi mumkin bo’lgan to’lovlarni belgilaydigan model bilan. Ajou Technovate, Teenhack va Yosh Startaperlar sovrindori.",
+      uz: "To’lovlar, muddatlar va tahlil bitta tizimda, kechikishi mumkin bo’lgan to’lovlarni oldindan ko’rsatadi. Ajou Technovate, Teenhack va Yosh Startaperlar g’olibi.",
     },
     stack: ["TypeScript", "Next.js", "Chart.js"],
     live: "https://rev-trak-flame.vercel.app",
@@ -157,11 +157,11 @@ export const projects = [
   {
     slug: "trade-qahramon",
     name: "Trade Qahramon",
-    kind: { en: "Economics simulator", uz: "Iqtisod simulyatori" },
-    year: "2023 — present",
+    kind: { en: "Economics simulator", uz: "Iqtisodiyot simulyatori" },
+    year: { en: "2023 — present", uz: "2023 — hozir" },
     summary: {
       en: "Supply and demand you can push on and watch react. 15 schools, 135+ students, ~40% better retention.",
-      uz: "Talab va taklifni o’zgartirib, natijasini kuzatish mumkin. 15 maktab, 135+ o’quvchi, ~40% yaxshi o’zlashtirish.",
+      uz: "Talab va taklifni o’zgartirib, bozor qanday javob berishini ko’rish mumkin. 15 ta maktab, 135+ o’quvchi, mavzuni eslab qolish ~40% yaxshilangan.",
     },
     stack: ["TypeScript", "Next.js", "AI APIs"],
     live: "https://trade-qahramon.vercel.app",
@@ -171,11 +171,11 @@ export const projects = [
   {
     slug: "bexa",
     name: "Bexa",
-    kind: { en: "Design rules for AI coding agents", uz: "AI kodlash agentlari uchun dizayn qoidalari" },
+    kind: { en: "Design rules for AI coding agents", uz: "AI agentlar uchun dizayn qoidalari" },
     year: "2026",
     summary: {
       en: "SKILL.md files that pull coding agents off their default look — the purple gradient, the three equal cards. My most-starred repo.",
-      uz: "Kodlash agentlarini standart ko’rinishdan — binafsha gradient, uchta bir xil karta — chetlatadigan SKILL.md fayllari. Eng ko’p yulduz olgan repozitoriyam.",
+      uz: "Kod yozuvchi AI agentlarni odatiy dizayndan — binafsha gradient va uchta bir xil kartadan — voz kechtiradigan SKILL.md fayllar. GitHub’dagi eng ko’p yulduz olgan loyiham.",
     },
     stack: ["Markdown", "Design systems"],
     repo:
@@ -189,7 +189,7 @@ export const projects = [
     year: "2026",
     summary: {
       en: "Three languages, five months, still the school's front door.",
-      uz: "Uch til, besh oy — hamon maktabning asosiy sahifasi.",
+      uz: "Uch tilda, besh oyda yaratilgan va hozir ham maktabning asosiy sayti.",
     },
     stack: ["JavaScript", "Tailwind CSS", "HTML/CSS"],
     live: "https://target-international-school.vercel.app",
@@ -204,25 +204,25 @@ export const experience = [
     orgNote: { en: "Real-estate agency, Tashkent", uz: "Ko’chmas mulk agentligi, Toshkent" },
     role: {
       en: "Software & Database Engineer",
-      uz: "Dasturiy ta’minot va ma’lumotlar bazasi injineri",
+      uz: "Dasturiy ta’minot va ma’lumotlar bazasi muhandisi",
     },
-    period: { en: "Feb 2024 — present", uz: "2024 fev — hozir" },
+    period: { en: "Feb 2024 — present", uz: "2024-yil fevral — hozir" },
     points: {
       en: [
         "Built the full-stack platform that manages 430+ property listings, with AI automations that removed roughly 23 hours of manual data entry a week.",
         "Built the internal dashboards agents work in, and integrated REST APIs across three separate platforms.",
       ],
       uz: [
-        "430+ ko’chmas mulk e’lonini boshqaradigan full-stack platformani qurdim; AI avtomatlashtirish haftada qo’lda ma’lumot kiritishning taxminan 23 soatini olib tashladi.",
-        "Agentlar ishlaydigan ichki paneller qurdim va uchta alohida platforma bo’ylab REST API larni birlashtirdim.",
+        "430+ ko’chmas mulk e’lonini boshqaradigan full-stack platformani yaratdim. AI yordamidagi avtomatlashtirish haftasiga taxminan 23 soatlik qo’lda ma’lumot kiritishni olib tashladi.",
+        "Agentlar ishlaydigan ichki boshqaruv panellarini yaratdim va uchta alohida platformani REST API orqali bog’ladim.",
       ],
     },
   },
   {
     org: "Ibrat Farzandlari",
-    orgNote: { en: "Uzbekistan Youth Agency", uz: "O’zbekiston Yoshlar agentligi" },
+    orgNote: { en: "Uzbekistan Youth Agency", uz: "Yoshlar ishlari agentligi" },
     role: { en: "Website Manager & Team Lead", uz: "Sayt menejeri va jamoa rahbari" },
-    period: { en: "Oct 2024 — Sep 2025", uz: "2024 okt — 2025 sen" },
+    period: { en: "Oct 2024 — Sep 2025", uz: "2024-yil oktyabr — 2025-yil sentyabr" },
     points: {
       en: [
         "Led six people building a national debate platform used by 500+ students.",
@@ -230,9 +230,9 @@ export const experience = [
         "Ran the sprints, the database architecture decisions and the fortnightly stakeholder reviews.",
       ],
       uz: [
-        "500+ o’quvchi foydalanadigan milliy debat platformasini qurgan olti kishilik jamoaga rahbarlik qildim.",
-        "Notion dan saytga kontent chiqarish quvurini qurdim; bu nashr qilish vaqtini taxminan to’rtdan uch qismga qisqartirdi.",
-        "Sprintlar, ma’lumotlar bazasi arxitekturasi qarorlari va ikki haftalik hisobotlarni boshqardim.",
+        "500+ o’quvchi foydalanadigan milliy debat platformasini yaratgan 6 kishilik jamoaga rahbarlik qildim.",
+        "Notion’dan saytga kontent chiqarishni avtomatlashtirdim — nashr qilish vaqti taxminan 75% ga qisqardi.",
+        "Sprintlarni, ma’lumotlar bazasi arxitekturasi bo’yicha qarorlarni va ikki haftada bir bo’ladigan hisobot uchrashuvlarini boshqardim.",
       ],
     },
   },
@@ -240,13 +240,13 @@ export const experience = [
     org: "Zonic.uz",
     orgNote: "",
     role: { en: "Junior Backend Developer", uz: "Junior backend dasturchi" },
-    period: { en: "Jan 2022 — Jul 2023", uz: "2022 yan — 2023 iyul" },
+    period: { en: "Jan 2022 — Jul 2023", uz: "2022-yil yanvar — 2023-yil iyul" },
     points: {
       en: [
         "Wrote a Python Telegram bot with a clean command-handling layer, and moved rendering to Next.js SSR for a ~40% improvement in load time.",
       ],
       uz: [
-        "Buyruqlarni toza qatlamda boshqaradigan Python Telegram bot yozdim va renderni Next.js SSR ga o’tkazib, yuklanish vaqtini ~40% yaxshiladim.",
+        "Buyruqlarni aniq tuzilishda qayta ishlaydigan Python Telegram bot yozdim va sahifalarni Next.js SSR’ga o’tkazib, yuklanish vaqtini ~40% ga yaxshiladim.",
       ],
     },
   },
@@ -255,11 +255,11 @@ export const experience = [
 export const community = [
   {
     name: "Target Coders",
-    role: { en: "Founder & President", uz: "Asoschi va rais" },
+    role: { en: "Founder & President", uz: "Asoschi va prezident" },
     period: { en: "2024 — present", uz: "2024 — hozir" },
     text: {
       en: "36 members learning React, Next.js and AI tools. The curriculum took a team to a state competition win.",
-      uz: "React, Next.js va AI vositalarini o’rganayotgan 36 a’zo. Dastur bir jamoani viloyat tanlovida g’alabaga olib chiqdi.",
+      uz: "React, Next.js va AI vositalarini o’rganayotgan 36 a’zo. O’quv dasturimiz bilan tayyorlangan jamoa davlat miqyosidagi tanlovda g’olib bo’ldi.",
     },
   },
   {
@@ -268,7 +268,7 @@ export const community = [
     period: { en: "2022 — present", uz: "2022 — hozir" },
     text: {
       en: "1,500+ learners on Telegram and TikTok. 200+ posts, 70+ students coached to B1.",
-      uz: "Telegram va TikTok da 1,500+ o’quvchi. 200+ post, 70+ o’quvchi B1 darajasiga yetdi.",
+      uz: "Telegram va TikTok’da 1,500+ o’quvchi. 200+ post, 70+ o’quvchi B1 darajasiga chiqdi.",
     },
   },
   {
@@ -277,7 +277,7 @@ export const community = [
     period: { en: "2022 — present", uz: "2022 — hozir" },
     text: {
       en: "41 bilingual tutorials. 11,000+ views across six countries.",
-      uz: "41 ikki tilli darslik. Olti mamlakatdan 11,000+ ko’rish.",
+      uz: "Ikki tilda 41 ta video darslik. Olti davlatdan 11,000+ ko’rish.",
     },
     href: "https://www.youtube.com/@BexruzTursunboev",
   },
@@ -294,7 +294,7 @@ export const awards = [
     name: "Ajou Technovate Hackathon",
     detail: {
       en: "1st place — AI community-finance app, 38 teams",
-      uz: "1-o’rin — AI jamoa-moliya ilovasi, 38 jamoa",
+      uz: "1-o’rin — AI asosidagi jamoaviy moliya ilovasi, 38 jamoa",
     },
   },
   {
@@ -302,25 +302,25 @@ export const awards = [
     name: "ICT Week",
     detail: {
       en: "Selected by the Ministry of Digital Technologies — AI for Social Good",
-      uz: "Raqamli texnologiyalar vazirligi tanlovi — ijtimoiy foyda uchun AI",
+      uz: "Raqamli texnologiyalar vazirligi tomonidan tanlangan — AI for Social Good",
     },
   },
   {
     year: "2024",
     name: "Teenhack + Yosh Startaperlar Award",
-    detail: { en: "For RevTrak", uz: "RevTrak uchun" },
+    detail: { en: "For RevTrak", uz: "RevTrak loyihasi uchun" },
   },
   {
     year: "2023",
     name: "GO Code Olympiad",
-    detail: { en: "2nd place, 86 participants", uz: "2-o’rin, 86 qatnashchi" },
+    detail: { en: "2nd place, 86 participants", uz: "2-o’rin, 86 ishtirokchi" },
   },
   {
     year: "2023",
     name: "ISIJ Cup",
     detail: {
       en: "B group winner, 125 international participants",
-      uz: "B guruh g’olibi, 125 xalqaro qatnashchi",
+      uz: "B guruh g’olibi, 125 xalqaro ishtirokchi",
     },
   },
   {
@@ -328,18 +328,18 @@ export const awards = [
     name: "Judo",
     detail: {
       en: "2× district champion, 3× regional qualifier",
-      uz: "2 marta tuman chempioni, 3 marta viloyat saralashi",
+      uz: "2 marta tuman chempioni, 3 marta viloyat bosqichiga chiqqan",
     },
   },
 ];
 
 export const toolkit = [
-  { group: { en: "Languages", uz: "Tillar" }, items: ["TypeScript", "JavaScript", "Python", "C++", "SQL"] },
+  { group: { en: "Languages", uz: "Dasturlash tillari" }, items: ["TypeScript", "JavaScript", "Python", "C++", "SQL"] },
   { group: { en: "Frontend", uz: "Frontend" }, items: ["React", "Next.js", "Tailwind CSS", "Chart.js"] },
   { group: { en: "Backend", uz: "Backend" }, items: ["Node.js", "Express", "Django", "REST API design"] },
-  { group: { en: "Data", uz: "Ma’lumotlar" }, items: ["PostgreSQL", "MongoDB", "Supabase", "Prisma"] },
+  { group: { en: "Data", uz: "Ma’lumotlar bazasi" }, items: ["PostgreSQL", "MongoDB", "Supabase", "Prisma"] },
   { group: { en: "AI", uz: "AI" }, items: ["Claude API", "OpenAI API", "Prompt engineering"] },
-  { group: { en: "Practice", uz: "Amaliyot" }, items: ["Git", "CI/CD", "Agile", "Accessibility"] },
+  { group: { en: "Practice", uz: "Jarayonlar" }, items: ["Git", "CI/CD", "Agile", "Accessibility"] },
 ];
 
 /**
@@ -349,7 +349,7 @@ export const toolkit = [
  */
 export const education = {
   school: "Duke Kunshan University",
-  note: { en: "Undergraduate", uz: "Bakalavr" },
+  note: { en: "Undergraduate", uz: "Bakalavriat" },
   period: "2026 — 2030",
   logo: { src: "/logos/duke-kunshan.png", width: 120, height: 120 },
   prior: {
@@ -362,22 +362,22 @@ export const education = {
     logo: { src: "/logos/target-international-school.png", width: 120, height: 120 },
     points: {
       en: ["GPA 5.0 / 5.0", "Rank 3 of 150", "SAT 1520", "IELTS 7.0"],
-      uz: ["GPA 5.0 / 5.0", "150 dan 3-o’rin", "SAT 1520", "IELTS 7.0"],
+      uz: ["GPA 5.0 / 5.0", "150 o’quvchi ichida 3-o’rin", "SAT 1520", "IELTS 7.0"],
     },
   },
 };
 
 export const languages = [
   {
-    name: { en: "Uzbek", uz: "O’zbek" },
+    name: { en: "Uzbek", uz: "O’zbek tili" },
     level: { en: "Native", uz: "Ona tili" },
   },
   {
-    name: { en: "Russian", uz: "Rus" },
-    level: { en: "Professional", uz: "Professional" },
+    name: { en: "Russian", uz: "Rus tili" },
+    level: { en: "Professional", uz: "Yuqori daraja" },
   },
   {
-    name: { en: "English", uz: "Ingliz" },
+    name: { en: "English", uz: "Ingliz tili" },
     level: "IELTS 7.0",
   },
 ];
@@ -392,9 +392,9 @@ export const links = [
 
 /** Powers the nav and the scroll-spy. `id` must match the section element's id. */
 export const sections = [
-  { id: "work", label: { en: "Work", uz: "Ishlar" } },
+  { id: "work", label: { en: "Work", uz: "Loyihalar" } },
   { id: "experience", label: { en: "Experience", uz: "Tajriba" } },
-  { id: "beyond", label: { en: "Beyond", uz: "Qo’shimcha" } },
+  { id: "beyond", label: { en: "Beyond", uz: "Faoliyat" } },
   { id: "about", label: { en: "About", uz: "Men haqimda" } },
   { id: "contact", label: { en: "Contact", uz: "Aloqa" } },
 ];

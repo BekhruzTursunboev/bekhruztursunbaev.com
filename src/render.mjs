@@ -244,7 +244,7 @@ const hero = () => `
 <section id="top" class="relative pt-28 pb-20 md:pt-32 md:pb-28">
   <div class="shell">
     <div class="reveal flex flex-wrap items-center gap-x-6 gap-y-3">
-      <span class="eyebrow inline-flex items-center gap-2">${icon.pin()}${esc(person.based)} · UTC+8</span>
+      <span class="eyebrow inline-flex items-center gap-2">${icon.pin()}${esc(T.ogPlace)} · UTC+8</span>
     </div>
 
     <h1 class="mt-8 font-display font-extrabold" style="font-size:var(--text-hero);line-height:0.86">
@@ -319,12 +319,12 @@ const work = () => {
     <article class="grid items-start gap-8 md:grid-cols-12 md:gap-10">
       <div class="${flip ? "md:col-span-7 md:col-start-6" : "md:col-span-7"}">
         <a href="${esc(p.live ?? p.repo)}" target="_blank" rel="noopener" class="shot-link spotlight block" aria-label="Open ${esc(p.name)}, ${esc(c(p.kind))}">
-          ${shot(p.slug, "(min-width:768px) 56vw, 92vw", n === 0, `${p.name} screenshot — ${p.kind} built by ${person.name}`)}
+          ${shot(p.slug, "(min-width:768px) 56vw, 92vw", n === 0, `${p.name} screenshot — ${c(p.kind)} built by ${person.name}`)}
         </a>
       </div>
 
       <div class="${flip ? "md:col-span-5 md:row-start-1 md:pr-4" : "md:col-span-5 md:pl-4"}">
-        <p class="mono text-[0.875rem] text-ink-3">${pad(n + 1)} / ${esc(p.year)}</p>
+        <p class="mono text-[0.875rem] text-ink-3">${pad(n + 1)} / ${esc(c(p.year))}</p>
         <h3 class="reveal display mt-3" style="font-size:var(--text-title)">${esc(p.name)}</h3>
         <p class="mt-2 font-medium text-accent-ink">${esc(c(p.kind))}</p>
         <p class="reveal mt-5 text-ink-2" style="--i:1">${type(c(p.summary))}</p>
@@ -386,7 +386,7 @@ const work = () => {
         .map((p, n) => {
           const href = p.live ?? p.repo;
           const media = p.live
-            ? `<a href="${esc(href)}" target="_blank" rel="noopener" class="shot-link block" aria-label="Open ${esc(p.name)}, ${esc(c(p.kind))}" tabindex="-1">${shot(p.slug, "(min-width:640px) 44vw, 92vw", false, `${p.name} screenshot — ${p.kind}`)}</a>`
+            ? `<a href="${esc(href)}" target="_blank" rel="noopener" class="shot-link block" aria-label="Open ${esc(p.name)}, ${esc(c(p.kind))}" tabindex="-1">${shot(p.slug, "(min-width:640px) 44vw, 92vw", false, `${p.name} screenshot — ${c(p.kind)}`)}</a>`
             : `<div class="shot shot-blank"><span class="mono text-[0.8125rem] text-ink-3">SKILL.md</span></div>`;
           return `
       <article class="wght-target reveal spotlight card" ${i(n)}>
@@ -396,7 +396,7 @@ const work = () => {
             <h4 class="wght-shift font-display text-[1.4375rem] tracking-tight">${esc(p.name)}</h4>
             <a href="${esc(href)}" target="_blank" rel="noopener" class="tap shrink-0 text-ink-3 transition-colors duration-300 hover:text-accent-ink" aria-label="${esc(p.name)} — open">${icon.arrowUpRight("size-[1.125rem]")}</a>
           </div>
-          <p class="mono mt-1.5 text-[0.8125rem] text-ink-3">${esc(p.kind)} · ${esc(p.year)}</p>
+          <p class="mono mt-1.5 text-[0.8125rem] text-ink-3">${esc(c(p.kind))} · ${esc(c(p.year))}</p>
           <p class="mt-3 text-[1rem] text-ink-2">${type(c(p.summary))}</p>
           <div class="mt-4">${stackList(p.stack.slice(0, 3))}</div>
           <div class="mt-5 flex flex-wrap items-center gap-x-5 gap-y-2 border-t border-line pt-4">
@@ -436,7 +436,7 @@ const experienceSection = () => `
       <li class="reveal grid gap-5 border-b border-line py-10 md:grid-cols-12 md:gap-10" ${i(n)}>
         <div class="md:col-span-4">
           <h3 class="font-display text-[1.5rem] leading-tight font-bold tracking-tight">${esc(role.org)}</h3>
-          ${role.orgNote ? `<p class="mt-1.5 text-[1rem] text-ink-3">${esc(c(role.orgNote))}</p>` : ""}
+          ${c(role.orgNote) ? `<p class="mt-1.5 text-[1rem] text-ink-3">${esc(c(role.orgNote))}</p>` : ""}
           <p class="mono mt-4 text-[0.8125rem] tracking-wide text-ink-3">${esc(c(role.period))}</p>
         </div>
         <div class="md:col-span-8">
@@ -648,7 +648,7 @@ const contact = () => `
 
 <footer class="border-t border-line py-10">
   <div class="shell flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-    <p class="mono text-[0.8125rem] text-ink-3">© ${new Date().getFullYear()} ${esc(person.name)} · ${esc(person.based)}</p>
+    <p class="mono text-[0.8125rem] text-ink-3">© ${new Date().getFullYear()} ${esc(person.name)} · ${esc(T.ogPlace)}</p>
     <p class="mono text-[0.8125rem] text-ink-3">${esc(T.footerNote)}</p>
   </div>
 </footer>`;
@@ -710,7 +710,7 @@ const jsonLd = (lang, href, meta) => ({
       "@type": "ProfilePage",
       "@id": `${person.url}/#page`,
       url: href(lang),
-      name: `${person.name} — ${person.role}`,
+      name: `${person.name} — ${T.ogRole}`,
       isPartOf: { "@id": `${person.url}/#website` },
       about: { "@id": `${person.url}/#person` },
       primaryImageOfPage: ogFor(lang),
@@ -761,7 +761,7 @@ export function renderPage({ cssHref, jsHref, fontKB = 0, jsKB = 0, lang = DEFAU
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>${esc(person.name)} — ${esc(person.role)}</title>
+<title>${esc(person.name)} — ${esc(T.ogRole)}</title>
 <meta name="description" content="${esc(description())}">
 <link rel="canonical" href="${esc(href(lang))}">
 ${LANGS.map((l) => `<link rel="alternate" hreflang="${langMeta[l].htmlLang}" href="${esc(href(l))}">`).join("\n")}
@@ -774,8 +774,8 @@ ${LANGS.map((l) => `<link rel="alternate" hreflang="${langMeta[l].htmlLang}" hre
 <meta name="color-scheme" content="dark light">
 
 <meta property="og:type" content="profile">
-<meta property="og:title" content="${esc(person.name)} — ${esc(person.role)}">
-<meta property="og:description" content="${esc(intro.lead)}">
+<meta property="og:title" content="${esc(person.name)} — ${esc(T.ogRole)}">
+<meta property="og:description" content="${esc(c(intro.lead))}">
 <meta property="og:url" content="${esc(href(lang))}">
 <meta property="og:site_name" content="${esc(person.domain)}">
 <meta property="og:locale" content="${meta.ogLocale}">
@@ -783,10 +783,10 @@ ${LANGS.filter((l) => l !== lang).map((l) => `<meta property="og:locale:alternat
 <meta property="og:image" content="${esc(ogFor(lang))}">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="${esc(person.name)}, ${esc(person.role)}">
+<meta property="og:image:alt" content="${esc(person.name)}, ${esc(T.ogRole)}">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="${esc(person.name)} — ${esc(person.role)}">
-<meta name="twitter:description" content="${esc(intro.lead)}">
+<meta name="twitter:title" content="${esc(person.name)} — ${esc(T.ogRole)}">
+<meta name="twitter:description" content="${esc(c(intro.lead))}">
 <meta name="twitter:image" content="${esc(ogFor(lang))}">
 
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">

@@ -124,6 +124,10 @@ for (const page of pages) {
   if (/\bundefined\b/.test(html)) {
     checks.push(`${tag} the word "undefined" reached the markup`);
   }
+  // A { en, uz } field rendered without a language lookup stringifies to this.
+  if (html.includes("[object Object]")) {
+    checks.push(`${tag} a translatable field was rendered without c(): "[object Object]"`);
+  }
   // Uzbek here is written in Latin script. A stray Cyrillic homoglyph -- an
   // a, e or o that looks identical but is not -- renders from a fallback
   // font and visibly breaks the word. One had already slipped into the copy.
