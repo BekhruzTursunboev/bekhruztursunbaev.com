@@ -712,7 +712,10 @@ const jsonLd = (lang, href, meta) => ({
       url: href(lang),
       name: `${person.name} — ${T.ogRole}`,
       isPartOf: { "@id": `${person.url}/#website` },
-      about: { "@id": `${person.url}/#person` },
+      // Google requires mainEntity on a ProfilePage -- it names who the page
+      // is about. `about` is not a substitute and Search Console flags its
+      // absence as a critical issue.
+      mainEntity: { "@id": `${person.url}/#person` },
       primaryImageOfPage: ogFor(lang),
     },
   ],

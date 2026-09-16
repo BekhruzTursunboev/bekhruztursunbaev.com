@@ -147,6 +147,11 @@ for (const page of pages) {
   if (/\bundefined\b/.test(html)) {
     checks.push(`${tag} the word "undefined" reached the markup`);
   }
+  // Search Console reports a ProfilePage without mainEntity as a critical
+  // structured-data error, and it is easy to drop when editing the graph.
+  if (html.includes('"ProfilePage"') && !html.includes('"mainEntity"')) {
+    checks.push(`${tag} ProfilePage schema is missing mainEntity`);
+  }
   // A { en, uz } field rendered without a language lookup stringifies to this.
   if (html.includes("[object Object]")) {
     checks.push(`${tag} a translatable field was rendered without c(): "[object Object]"`);
