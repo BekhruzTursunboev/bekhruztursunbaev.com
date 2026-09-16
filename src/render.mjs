@@ -295,7 +295,6 @@ const hero = () => `
         )
         .join("")}
     </dl>
-    <p class="reveal mt-5 text-[1rem] text-ink-3">${type(c(availability.detail))}</p>
   </div>
 </section>`;
 
