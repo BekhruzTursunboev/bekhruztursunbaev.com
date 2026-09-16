@@ -106,8 +106,6 @@ export const ui = {
     elsewhere: "Elsewhere",
     telegram: "Telegram",
 
-    footerNote: "Built from scratch. No template, no page builder.",
-
     ogPlace: "Kunshan, China",
     ogRole: "Full-stack & AI engineer",
     ogTagline: "AI tutoring · property valuation · revenue tools",
@@ -181,7 +179,6 @@ export const ui = {
     contactBody: "Telegram orqali tezroq javob beraman, email ham bo’ladi.",
     elsewhere: "Havolalar",
     telegram: "Telegram",
-    footerNote: "Shablonsiz, noldan yozilgan.",
     ogPlace: "Kunshan, Xitoy",
     ogRole: "Full-stack va AI dasturchi",
     ogTagline: "AI repetitor · uy narxini baholash · daromad hisobi",

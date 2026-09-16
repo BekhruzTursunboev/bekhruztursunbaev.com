@@ -649,7 +649,6 @@ const contact = () => `
 <footer class="border-t border-line py-10">
   <div class="shell flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
     <p class="mono text-[0.8125rem] text-ink-3">© ${new Date().getFullYear()} ${esc(person.name)} · ${esc(T.ogPlace)}</p>
-    <p class="mono text-[0.8125rem] text-ink-3">${esc(T.footerNote)}</p>
   </div>
 </footer>`;
 
