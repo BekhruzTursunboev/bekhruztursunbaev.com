@@ -306,8 +306,7 @@ const work = () => {
 <section id="work" class="scroll-mt-24 py-24 md:py-32">
   <div class="shell">
     <h2 class="eyebrow reveal">${esc(T.selectedWork)}</h2>
-    <p class="reveal display mt-6">${esc(T.workHeadA)} <span class="accent-word">${esc(T.workHeadAccent)}</span>.</p>
-    <p class="reveal lead mt-6" style="--i:1">${esc(T.workLead)}</p>
+    <p class="reveal display mt-6">${fill(esc(T.workHead), { accent: `<span class="accent-word">${esc(T.workHeadAccent)}</span>` })}</p>
   </div>
 
   <div class="shell mt-16 space-y-24 md:mt-20 md:space-y-32">
@@ -515,7 +514,6 @@ const beyond = () => `
   <div class="mt-28 md:mt-36">
     <div class="shell">
       <h3 class="eyebrow reveal">${esc(T.toolkit)}</h3>
-      <p class="reveal mt-4 text-ink-3">${esc(T.toolkitLead)}</p>
     </div>
     <div class="shell mt-10 grid grid-cols-1 gap-x-10 gap-y-8 sm:grid-cols-2 lg:grid-cols-3">
       ${toolkit
@@ -533,14 +531,12 @@ const beyond = () => `
   </div>
 </section>`;
 
-let stats = { fontKB: 0, jsKB: 0 };
-
 const about = () => `
 <section id="about" class="scroll-mt-24 py-24 md:py-32">
   <div class="shell">
     <header class="max-w-3xl">
       <h2 class="eyebrow reveal">${esc(T.about)}</h2>
-      <p class="reveal display mt-5">${esc(T.aboutHeadA)} <span class="accent-word">${esc(T.aboutHeadAccent)}</span>${esc(T.aboutHeadB)}</p>
+      <p class="reveal display mt-5">${fill(esc(T.aboutHead), { accent: `<span class="accent-word">${esc(T.aboutHeadAccent)}</span>` })}</p>
     </header>
 
     <div class="mt-16 grid grid-cols-1 gap-16 md:mt-20 md:grid-cols-12 md:gap-12">
@@ -548,7 +544,6 @@ const about = () => `
         <div class="reveal space-y-5">
           <p class="lead">${esc(T.aboutLead)}</p>
           <p class="prose-measure text-ink-2">${esc(fill(T.aboutBody, { school: education.school }))}</p>
-          <p class="prose-measure text-ink-2">${esc(T.aboutJudo)}</p>
         </div>
       </div>
 
@@ -573,22 +568,7 @@ const about = () => `
               )
               .join("")}
           </dl>
-          <p class="mt-5 text-[1rem] text-ink-3">${esc(T.workAuth)}</p>
         </div>
-      </div>
-    </div>
-
-    <div class="reveal mt-28 border-t border-line pt-10 md:mt-36">
-      <h3 class="eyebrow">${esc(T.colophon)}</h3>
-      <div class="mt-6 grid grid-cols-1 gap-x-12 gap-y-8 md:grid-cols-12">
-        <p class="prose-measure text-ink-2 md:col-span-7">${fill(esc(T.colophonBody), { selfHosted: `<em class="text-ink not-italic">${esc(T.colophonSelfHosted)}</em>` })}</p>
-        <dl class="md:col-span-4 md:col-start-9">
-          <div class="flex items-baseline justify-between gap-4 border-b border-line py-3"><dt class="text-[0.9375rem] text-ink-3">${esc(T.statThirdParty)}</dt><dd class="mono text-[0.875rem]">0</dd></div>
-          <div class="flex items-baseline justify-between gap-4 border-b border-line py-3"><dt class="text-[0.9375rem] text-ink-3">${esc(T.statJs)}</dt><dd class="mono text-[0.875rem]">${stats.jsKB} KB</dd></div>
-          <div class="flex items-baseline justify-between gap-4 border-b border-line py-3"><dt class="text-[0.9375rem] text-ink-3">${esc(T.statFonts)}</dt><dd class="mono text-[0.875rem]">${stats.fontKB} KB</dd></div>
-          <div class="flex items-baseline justify-between gap-4 border-b border-line py-3"><dt class="text-[0.9375rem] text-ink-3">${esc(T.statDomain)}</dt><dd class="mono text-[0.875rem]">${esc(person.domain)}</dd></div>
-          <div class="flex items-baseline justify-between gap-4 border-b border-line py-3"><dt class="text-[0.9375rem] text-ink-3">${esc(T.statSource)}</dt><dd class="mono text-[0.875rem]"><a href="${esc(person.repo)}" target="_blank" rel="noopener" class="tap text-ink transition-colors duration-300 hover:text-accent-ink"><span class="link-draw">${esc(T.statSourceValue)}</span></a></dd></div>
-        </dl>
       </div>
     </div>
   </div>
@@ -771,8 +751,7 @@ export function render404({ cssHref, lang = DEFAULT_LANG }) {
 `;
 }
 
-export function renderPage({ cssHref, jsHref, fontKB = 0, jsKB = 0, lang = DEFAULT_LANG }) {
-  stats = { fontKB, jsKB };
+export function renderPage({ cssHref, jsHref, lang = DEFAULT_LANG }) {
   L = lang;
   T = ui[lang];
   const meta = langMeta[lang];

@@ -87,11 +87,11 @@ export const projects = [
     },
     detail: {
       en: [
-        "API calls are batched and concurrent sessions handled in parallel — that is where the uptime and response time above come from.",
+        "API calls are batched and concurrent sessions run in parallel, which is what keeps responses fast under load.",
         "Prompt optimisation raised answer accuracy by 35%.",
       ],
       uz: [
-        "API so’rovlari guruhlab yuboriladi va sessiyalar parallel ishlaydi — yuqoridagi uzluksiz ishlash va javob vaqti shunga bog’liq.",
+        "API so’rovlari guruhlab yuboriladi va sessiyalar parallel ishlaydi, shu tufayli yuklama ostida ham javob tez qaytadi.",
         "Promptlarni optimallashtirish javoblar aniqligini 35% ga oshirdi.",
       ],
     },
@@ -170,8 +170,8 @@ export const projects = [
     kind: { en: "Design rules for AI coding agents", uz: "AI agentlar uchun dizayn qoidalari" },
     year: "2026",
     summary: {
-      en: "SKILL.md files that pull coding agents off their default look — the purple gradient, the three equal cards. My most-starred repo.",
-      uz: "Kod yozuvchi AI agentlarni odatiy dizayndan — binafsha gradient va uchta bir xil kartadan — voz kechtiradigan SKILL.md fayllar. GitHub’dagi eng ko’p yulduz olgan loyiham.",
+      en: "SKILL.md files that pull coding agents off their default look — the purple gradient, the three equal cards.",
+      uz: "Kod yozuvchi AI agentlarni odatiy dizayndan — binafsha gradient va uchta bir xil kartadan — voz kechtiradigan SKILL.md fayllar.",
     },
     stack: ["Markdown", "Design systems"],
     repo:

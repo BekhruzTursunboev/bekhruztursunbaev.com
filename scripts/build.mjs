@@ -21,23 +21,15 @@ await mkdir(join(DIST, "assets"), { recursive: true });
 /* 1 ─ assets that the markup references, so Tailwind can scan the markup after */
 await cp("public", DIST, { recursive: true });
 
-/* 2 ─ measure what the page will actually serve, so the colophon cannot drift */
-const fontFiles = await readdir(join(DIST, "fonts"));
-let fontBytes = 0;
-for (const file of fontFiles) fontBytes += (await stat(join(DIST, "fonts", file))).size;
-const jsBytes = (await stat(join("src", "motion.js"))).size;
-const fontKB = Math.round(fontBytes / 1024);
-const jsKB = Math.round((jsBytes / 1024) * 10) / 10;
-
-/* 3 ─ render once to a temp file purely so Tailwind can scan the class names */
+/* 2 ─ render once to a temp file purely so Tailwind can scan the class names */
 const scanFile = join(DIST, ".scan.html");
 await writeFile(
   scanFile,
-  renderPage({ cssHref: "/x.css", jsHref: "/x.js", fontKB, jsKB }),
+  renderPage({ cssHref: "/x.css", jsHref: "/x.js" }),
   "utf8"
 );
 
-/* 4 ─ compile CSS (Tailwind emits only the utilities present in the markup) */
+/* 3 ─ compile CSS (Tailwind emits only the utilities present in the markup) */
 execFileSync(
   process.execPath,
   [
@@ -56,16 +48,16 @@ const cssName = `assets/site.${hash(css)}.css`;
 await writeFile(join(DIST, cssName), css);
 await rm(join(DIST, "assets", "tmp.css"));
 
-/* 5 ─ the client runtime, hashed the same way */
+/* 4 ─ the client runtime, hashed the same way */
 const js = await readFile(join("src", "motion.js"));
 const jsName = `assets/motion.${hash(js)}.js`;
 await writeFile(join(DIST, jsName), js);
 
-/* 6 ─ one complete page per language: English at /, the rest at /<lang>/ */
+/* 5 ─ one complete page per language: English at /, the rest at /<lang>/ */
 await rm(scanFile);
 const pages = [];
 for (const lang of LANGS) {
-  const markup = renderPage({ cssHref: `/${cssName}`, jsHref: `/${jsName}`, fontKB, jsKB, lang });
+  const markup = renderPage({ cssHref: `/${cssName}`, jsHref: `/${jsName}`, lang });
   const dir = lang === DEFAULT_LANG ? DIST : join(DIST, lang);
   await mkdir(dir, { recursive: true });
   await writeFile(join(dir, "index.html"), markup, "utf8");
@@ -79,7 +71,7 @@ for (const lang of LANGS) {
   await writeFile(join(dir, "404.html"), render404({ cssHref: `/${cssName}`, lang }), "utf8");
 }
 
-/* 6b ─ Content-Security-Policy script hashes
+/* 5b ─ Content-Security-Policy script hashes
    The only executable inline script is the theme bootstrap, which has to run
    before first paint. Its hash is computed from the markup that was actually
    written, not from a copy of the source, so the policy cannot drift from the
@@ -102,7 +94,7 @@ if (!headers.includes("__CSP_SCRIPT_HASHES__")) {
 }
 await writeFile(headersPath, headers.replace("__CSP_SCRIPT_HASHES__", [...inlineHashes].join(" ")), "utf8");
 
-/* 7 ─ sitemap: every language, each declaring the others as alternates */
+/* 6 ─ sitemap: every language, each declaring the others as alternates */
 const today = new Date().toISOString().slice(0, 10);
 const ORIGIN = "https://bekhruztursunbaev.com";
 const entries = LANGS.map((lang) => {
@@ -128,7 +120,7 @@ ${entries}
   "utf8"
 );
 
-/* 8 ─ guard the things that quietly rot, on every language */
+/* 7 ─ guard the things that quietly rot, on every language */
 const checks = [];
 for (const page of pages) {
   const html = page.markup;
@@ -152,6 +144,21 @@ for (const page of pages) {
   if (html.includes('"ProfilePage"') && !html.includes('"mainEntity"')) {
     checks.push(`${tag} ProfilePage schema is missing mainEntity`);
   }
+  // The accent word in a display heading is a separate span, so the space
+  // around it has to live in the copy. When it does not, the heading renders as
+  // one mashed word -- "Tashkent toKunshan." shipped that way.
+  const LETTER = "A-Za-z\u00c0-\u024f\u2019";
+  for (const [, word, after] of html.matchAll(
+    new RegExp(`<span class="accent-word">([^<]*)</span>([${LETTER}])`, "g")
+  )) {
+    checks.push(`${tag} accent word runs into the next word: "${word}${after}…"`);
+  }
+  for (const [, before, word] of html.matchAll(
+    new RegExp(`([${LETTER}])<span class="accent-word">([^<]*)</span>`, "g")
+  )) {
+    checks.push(`${tag} accent word runs into the previous word: "…${before}${word}"`);
+  }
+
   // A { en, uz } field rendered without a language lookup stringifies to this.
   if (html.includes("[object Object]")) {
     checks.push(`${tag} a translatable field was rendered without c(): "[object Object]"`);
@@ -190,7 +197,7 @@ if (checks.length) {
   );
 }
 
-/* 9 ─ report */
+/* 8 ─ report */
 const walk = async (dir) => {
   const out = [];
   for (const entry of await readdir(dir, { withFileTypes: true })) {
