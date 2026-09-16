@@ -16,7 +16,8 @@
     "logos": "node scripts/logos.mjs",
     "vitals": "node scripts/vitals.mjs",
     "audit": "node scripts/audit.mjs",
-    "fonts": "node scripts/fonts.mjs"
+    "fonts": "node scripts/fonts.mjs",
+    "indexnow": "node scripts/indexnow.mjs"
   },
   "devDependencies": {
     "@tailwindcss/cli": "^4.3.3",

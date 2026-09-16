@@ -895,6 +895,28 @@ img {
   }
 }
 
+/* ---- cross-document view transitions ------------------------------------- */
+/* Switching language, or following the 404 back to the site, is a real
+   navigation between two documents. Without this the browser hard-cuts; with it
+   the old page cross-fades into the new one. Progressive enhancement: browsers
+   without support simply navigate as before, and it is off entirely when
+   reduced motion is asked for. */
+@view-transition {
+  navigation: auto;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.28s;
+  animation-timing-function: var(--ease-out);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  @view-transition {
+    navigation: none;
+  }
+}
+
 /* ============================================================================
    REDUCED MOTION
    Anything decorative resolves to its finished state instantly. Nothing here

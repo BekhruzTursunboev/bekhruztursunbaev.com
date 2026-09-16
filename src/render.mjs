@@ -691,7 +691,31 @@ const personSchema = () => ({
     "Prompt engineering",
   ],
   sameAs: links.filter((l) => l.href.startsWith("http")).map((l) => l.href),
+  // Taken from the awards section rather than restated, so the two cannot
+  // disagree.
+  award: awards.map((a) => `${a.name} (${a.year})`),
 });
+
+/**
+ * Every project that has a live URL, as its own node. Search engines read the
+ * page as prose either way; this states plainly that these are applications,
+ * who wrote them and where the source is.
+ */
+const projectSchemas = () =>
+  projects
+    .filter((project) => project.live)
+    .map((project) => ({
+      "@type": "SoftwareApplication",
+      "@id": `${person.url}/#${project.slug}`,
+      name: project.name,
+      url: project.live,
+      description: c(project.summary),
+      applicationCategory: "WebApplication",
+      operatingSystem: "Web",
+      author: { "@id": `${person.url}/#person` },
+      inLanguage: L,
+      ...(project.repo ? { sameAs: project.repo } : {}),
+    }));
 
 const jsonLd = (lang, href, meta) => ({
   "@context": "https://schema.org",
@@ -718,6 +742,7 @@ const jsonLd = (lang, href, meta) => ({
       mainEntity: { "@id": `${person.url}/#person` },
       primaryImageOfPage: ogFor(lang),
     },
+    ...projectSchemas(),
   ],
 });
 
